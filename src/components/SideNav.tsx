@@ -14,7 +14,7 @@ const SideNav: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "122px",
+        width: "74px",
         height: "941px",
         borderRight: "1px solid #EEEEEE",
         padding: "24px 18px",
