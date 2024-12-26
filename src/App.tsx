@@ -1,16 +1,19 @@
-import SideNav from "./components/SideNav";
-import TopNav from "./components/TopNav";
-import ContentContainer from "./components/ContentContainer";
+import React from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import InspectionSchedule from "./pages/InspectionSchedule";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Noto Sans", sans-serif',
+  },
+  // You can add more theme customizations here
+});
 
 function App() {
   return (
-    <div style={{ display: "flex" }}>
-      <SideNav />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <TopNav />
-        <ContentContainer />
-      </div>
-    </div>
+    <ThemeProvider theme={theme}>
+      <InspectionSchedule />
+    </ThemeProvider>
   );
 }
 

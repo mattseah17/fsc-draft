@@ -5,8 +5,10 @@ const TopNav: React.FC = () => {
   return (
     <Box
       sx={{
-        width: "1318px",
-        height: "33px",
+        flex: 1,
+        height: "32px",
+        minHeight: "32px",
+        maxHeight: "32px",
         borderBottom: "1px solid #EEEEEE",
         padding: "16px 32px",
         backgroundColor: "#FFFFFF",
@@ -21,17 +23,18 @@ const TopNav: React.FC = () => {
           fontFamily: "Noto Sans, sans-serif",
           fontWeight: 500,
           fontSize: "12px",
-          lineHeight: "16.34spx",
+          lineHeight: "16px",
         }}
       >
         Auto Scheduler
       </Typography>
       <Avatar
         alt="User Avatar"
-        src="/path/to/user/avatar.jpg" // Replace with actual image path
+        src="/path/to/user/avatar.jpg"
         sx={{
-          width: 32,
-          height: 32,
+          width: 24,
+          height: 24,
+          fontSize: 18,
         }}
       />
     </Box>
