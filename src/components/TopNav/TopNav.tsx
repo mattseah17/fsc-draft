@@ -5,7 +5,9 @@ const TopNav: React.FC = () => {
   return (
     <Box
       sx={{
-        flex: 1,
+        position: "sticky",
+        top: 0,
+        zIndex: 1100,
         height: "32px",
         minHeight: "32px",
         maxHeight: "32px",

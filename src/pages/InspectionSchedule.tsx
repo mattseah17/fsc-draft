@@ -13,7 +13,7 @@ const InspectionSchedule: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
-          overflow: "hidden",
+          overflow: "auto",
         }}
       >
         <TopNav />

@@ -16,10 +16,15 @@ import {
   TableRow,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import AddPremisesModal from "../AddPremisesModal/AddPremisesModal";
 import { Premises } from "../../types/premises";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const tableStyles = {
   title: {
@@ -28,7 +33,7 @@ const tableStyles = {
     alignItems: "center",
     padding: "11px 32px",
     borderBottom: "1px solid #EEEEEE",
-    width: "1230px",
+    width: "1215px",
     height: "40px",
   },
   headerCell: {
@@ -63,6 +68,8 @@ const InspectionScheduleContent: React.FC = () => {
   const [openModal, setOpenModal] = useState(false);
   const [premises, setPremises] = useState<Premises[]>([]);
   const [showToast, setShowToast] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [newlyAddedCount, setNewlyAddedCount] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -72,14 +79,40 @@ const InspectionScheduleContent: React.FC = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   const handleSavePremises = (newPremises: Premises[]) => {
-    setPremises(newPremises);
-    setShowToast(true);
+    setPremises((prevPremises) => {
+      const combinedPremises = [...prevPremises];
+      let addedCount = 0;
+
+      newPremises.forEach((newPremise) => {
+        const exists = combinedPremises.some(
+          (existing) =>
+            existing.enforcementNumber === newPremise.enforcementNumber
+        );
+
+        if (!exists) {
+          combinedPremises.push(newPremise);
+          addedCount++;
+        }
+      });
+
+      setNewlyAddedCount(addedCount);
+      setShowToast(true);
+      return combinedPremises;
+    });
   };
 
   const handleDeletePremise = (enforcementNumber: string) => {
     setPremises(
       premises.filter((p) => p.enforcementNumber !== enforcementNumber)
     );
+  };
+
+  const handleEditMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleEditMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const renderTable = () => (
@@ -157,7 +190,7 @@ const InspectionScheduleContent: React.FC = () => {
           <ApartmentOutlinedIcon sx={{ fontSize: 24 }} />
           <Box>
             <Typography variant="body2" color="text.secondary">
-              0 / 39 Premises
+              {premises.length} / 39 Premises
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Sengkang Fire Station
@@ -231,8 +264,10 @@ const InspectionScheduleContent: React.FC = () => {
           ) : (
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button
+                startIcon={<BorderColorOutlinedIcon />}
+                endIcon={<ExpandMoreOutlinedIcon />}
                 variant="outlined"
-                onClick={handleOpenModal}
+                onClick={handleEditMenuClick}
                 sx={{
                   fontSize: "14px",
                   fontWeight: 600,
@@ -241,6 +276,32 @@ const InspectionScheduleContent: React.FC = () => {
               >
                 Edit Schedule
               </Button>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleEditMenuClose}
+                elevation={0}
+                sx={{
+                  "& .MuiPaper-root": {
+                    border: "1px solid #E0E0E0",
+                  },
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleOpenModal();
+                    handleEditMenuClose();
+                  }}
+                  sx={{ gap: 1 }}
+                >
+                  <AddIcon fontSize="small" />
+                  Add Premises
+                </MenuItem>
+                <MenuItem onClick={handleEditMenuClose} sx={{ gap: 1 }}>
+                  <PersonAddAltIcon fontSize="small" />
+                  Assign Premises
+                </MenuItem>
+              </Menu>
               <Button
                 variant="contained"
                 disabled
@@ -298,6 +359,8 @@ const InspectionScheduleContent: React.FC = () => {
         open={openModal}
         onClose={handleCloseModal}
         onSave={handleSavePremises}
+        existingPremises={premises}
+        totalRequiredPremises={39}
       />
 
       {/* Success Toast */}
@@ -317,7 +380,7 @@ const InspectionScheduleContent: React.FC = () => {
             "& .MuiAlert-icon": { color: "#00653E" },
           }}
         >
-          Added {premises.length} premises to inspection schedule
+          Added {newlyAddedCount} premises to inspection schedule
         </Alert>
       </Snackbar>
     </Box>
