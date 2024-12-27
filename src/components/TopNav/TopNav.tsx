@@ -5,9 +5,10 @@ const TopNav: React.FC = () => {
   return (
     <Box
       sx={{
-        position: "sticky",
+        position: "fixed", // Changed from "sticky" to "fixed"
         top: 0,
         zIndex: 1100,
+        width: "100%", // Ensure it spans the full width of the viewport
         height: "32px",
         minHeight: "32px",
         maxHeight: "32px",

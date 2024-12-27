@@ -17,7 +17,9 @@ const InspectionSchedule: React.FC = () => {
         }}
       >
         <TopNav />
-        <InspectionScheduleContent />
+        <Box sx={{ marginTop: "48px" }}>
+          <InspectionScheduleContent />
+        </Box>
       </Box>
     </Box>
   );
