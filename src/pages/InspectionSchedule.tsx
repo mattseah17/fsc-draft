@@ -6,14 +6,14 @@ import InspectionScheduleContent from "../components/InspectionScheduleContent/I
 
 const InspectionSchedule: React.FC = () => {
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: "flex", height: "100%" }}>
       <SideNav />
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
-          overflow: "auto",
+          overflow: "hidden",
         }}
       >
         <TopNav />
