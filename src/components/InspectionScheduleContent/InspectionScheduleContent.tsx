@@ -380,7 +380,9 @@ const InspectionScheduleContent: React.FC = () => {
             "& .MuiAlert-icon": { color: "#00653E" },
           }}
         >
-          Added {newlyAddedCount} premises to inspection schedule
+          Added {newlyAddedCount}{" "}
+          {newlyAddedCount === 1 ? "premise" : "premises"} to inspection
+          schedule
         </Alert>
       </Snackbar>
     </Box>
