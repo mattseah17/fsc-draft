@@ -25,43 +25,7 @@ import { Premises } from "../../types/premises";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
-const tableStyles = {
-  title: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "11px 32px",
-    borderBottom: "1px solid #EEEEEE",
-    width: "1230px",
-    height: "40px",
-  },
-  headerCell: {
-    padding: "16px 20px 16px 32px",
-    fontFamily: "Noto Sans, sans-serif",
-    fontSize: "12px",
-    fontWeight: 600,
-    lineHeight: "16.34px",
-    textAlign: "left" as const,
-    borderBottom: "1px solid #EEEEEE",
-  },
-  cell: {
-    padding: "8px 40px 8px 32px",
-    fontFamily: "Noto Sans, sans-serif",
-    fontSize: "12px",
-    fontWeight: 600,
-    lineHeight: "16.34px",
-    textAlign: "left" as const,
-    borderBottom: "1px solid #EEEEEE",
-  },
-  footer: {
-    display: "flex",
-    alignItems: "center",
-    width: "1190px",
-    height: "40px",
-    padding: "16px 1142px 16px 32px",
-  },
-};
+import { styles } from "./styles";
 
 const InspectionScheduleContent: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -120,39 +84,39 @@ const InspectionScheduleContent: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={tableStyles.headerCell}>
+            <TableCell sx={styles.table.headerCell}>
               Enforcement Number
             </TableCell>
-            <TableCell sx={tableStyles.headerCell}>Premises Name</TableCell>
-            <TableCell sx={tableStyles.headerCell}>Address</TableCell>
-            <TableCell sx={tableStyles.headerCell}>
+            <TableCell sx={styles.table.headerCell}>Premises Name</TableCell>
+            <TableCell sx={styles.table.headerCell}>Address</TableCell>
+            <TableCell sx={styles.table.headerCell}>
               Last Inspection Date
             </TableCell>
-            <TableCell sx={tableStyles.headerCell}>Propensity Score</TableCell>
-            <TableCell sx={tableStyles.headerCell}>HRI/POI</TableCell>
-            <TableCell sx={tableStyles.headerCell}>Origin</TableCell>
-            <TableCell sx={tableStyles.headerCell}>Actions</TableCell>
+            <TableCell sx={styles.table.headerCell}>Propensity Score</TableCell>
+            <TableCell sx={styles.table.headerCell}>HRI/POI</TableCell>
+            <TableCell sx={styles.table.headerCell}>Origin</TableCell>
+            <TableCell sx={styles.table.headerCell}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {premises.map((premise) => (
             <TableRow key={premise.enforcementNumber}>
-              <TableCell sx={tableStyles.cell}>
+              <TableCell sx={styles.table.cell}>
                 {premise.enforcementNumber}
               </TableCell>
-              <TableCell sx={tableStyles.cell}>
+              <TableCell sx={styles.table.cell}>
                 {premise.premisesName}
               </TableCell>
-              <TableCell sx={tableStyles.cell}>{premise.address}</TableCell>
-              <TableCell sx={tableStyles.cell}>
+              <TableCell sx={styles.table.cell}>{premise.address}</TableCell>
+              <TableCell sx={styles.table.cell}>
                 {premise.lastInspectionDate}
               </TableCell>
-              <TableCell sx={tableStyles.cell}>
+              <TableCell sx={styles.table.cell}>
                 {premise.propensityScore}%
               </TableCell>
-              <TableCell sx={tableStyles.cell}>{premise.hriPoi}</TableCell>
-              <TableCell sx={tableStyles.cell}>{premise.origin}</TableCell>
-              <TableCell sx={tableStyles.cell}>
+              <TableCell sx={styles.table.cell}>{premise.hriPoi}</TableCell>
+              <TableCell sx={styles.table.cell}>{premise.origin}</TableCell>
+              <TableCell sx={styles.table.cell}>
                 <IconButton
                   onClick={() => handleDeletePremise(premise.enforcementNumber)}
                 >
@@ -167,7 +131,7 @@ const InspectionScheduleContent: React.FC = () => {
   );
 
   return (
-    <Box sx={{ padding: "32px" }}>
+    <Box sx={styles.container}>
       <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
         <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Draft" />
@@ -175,18 +139,8 @@ const InspectionScheduleContent: React.FC = () => {
         </Tabs>
       </Box>
 
-      <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
-        <Box
-          sx={{
-            flex: 1,
-            p: 2,
-            border: "1px solid #e0e0e0",
-            borderRadius: 1,
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
+      <Box sx={styles.statsContainer}>
+        <Box sx={styles.statBox}>
           <ApartmentOutlinedIcon sx={{ fontSize: 24 }} />
           <Box>
             <Typography variant="body2" color="text.secondary">
@@ -199,18 +153,7 @@ const InspectionScheduleContent: React.FC = () => {
         </Box>
 
         {["ROTA 1", "ROTA 2", "ROTA 3"].map((rota, index) => (
-          <Box
-            key={rota}
-            sx={{
-              flex: 1,
-              p: 2,
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              border: "1px solid #e0e0e0",
-              borderRadius: 1,
-            }}
-          >
+          <Box key={rota} sx={styles.statBox}>
             <Avatar
               sx={{
                 bgcolor:
@@ -231,13 +174,9 @@ const InspectionScheduleContent: React.FC = () => {
           </Box>
         ))}
       </Box>
-      <Box
-        sx={{
-          border: "1px solid #e0e0e0",
-          borderRadius: "16px",
-        }}
-      >
-        <Box sx={tableStyles.title}>
+
+      <Box sx={styles.tableContainer}>
+        <Box sx={styles.table.title}>
           <Typography
             variant="h6"
             sx={{
@@ -318,17 +257,7 @@ const InspectionScheduleContent: React.FC = () => {
         </Box>
 
         {premises.length === 0 ? (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              py: 8,
-              textAlign: "center",
-              height: "300px",
-            }}
-          >
+          <Box sx={styles.emptyState}>
             <Box
               component="img"
               src="src/assets/empty_state.png"
@@ -346,7 +275,7 @@ const InspectionScheduleContent: React.FC = () => {
         ) : (
           <>
             {renderTable()}
-            <Box sx={tableStyles.footer}>
+            <Box sx={styles.table.footer}>
               <Typography variant="caption" color="text.secondary">
                 {`1 - ${premises.length} of ${premises.length}`}
               </Typography>
@@ -370,16 +299,7 @@ const InspectionScheduleContent: React.FC = () => {
         onClose={() => setShowToast(false)}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert
-          severity="success"
-          sx={{
-            backgroundColor: "#CEF8E0",
-            color: "#00653E",
-            border: "1px solid #00653E",
-            borderRadius: "16px",
-            "& .MuiAlert-icon": { color: "#00653E" },
-          }}
-        >
+        <Alert severity="success" sx={styles.successAlert}>
           Added {newlyAddedCount}{" "}
           {newlyAddedCount === 1 ? "premise" : "premises"} to inspection
           schedule
