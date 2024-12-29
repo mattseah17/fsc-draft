@@ -79,23 +79,7 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
   };
 
   const handleSave = () => {
-    // Get recommended premises that should be automatically selected
-    const recommendedToAdd =
-      tabValue === 1
-        ? dummyRecommendedPremises
-            .slice(0, remainingPremisesNeeded)
-            .filter(
-              (premise) =>
-                !selectedPremises.some(
-                  (p) => p.enforcementNumber === premise.enforcementNumber
-                )
-            )
-        : [];
-
-    // Combine manually selected premises with recommended ones
-    const premisesToSave = [...selectedPremises, ...recommendedToAdd];
-
-    onSave(premisesToSave);
+    onSave(selectedPremises);
     setSelectedPremises([]);
     onClose();
   };
@@ -131,8 +115,24 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
     }
   };
 
-  const remainingPremisesNeeded =
-    totalRequiredPremises - (existingPremises.length + selectedPremises.length);
+  useEffect(() => {
+    if (tabValue === 1) {
+      const remainingNeeded = totalRequiredPremises - existingPremises.length;
+
+      const availableRecommended = dummyRecommendedPremises.filter(
+        (premise) =>
+          !existingPremises.some(
+            (p) => p.enforcementNumber === premise.enforcementNumber
+          )
+      );
+
+      const initialRecommended = availableRecommended.slice(0, remainingNeeded);
+
+      setSelectedPremises(initialRecommended);
+    } else if (tabValue === 0) {
+      setSelectedPremises([]);
+    }
+  }, [tabValue, totalRequiredPremises, existingPremises]);
 
   const renderSearchTab = () => (
     <Box sx={styles.searchContainer}>
@@ -142,34 +142,52 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
         availablePremises={availablePremises}
         onPremiseSelect={handleAutocompleteSelect}
       />
-      {selectedPremises.length > 0 ? (
-        <PremisesTable
-          premises={selectedPremises}
-          selectedPremises={selectedPremises}
-          onPremisesSelect={setSelectedPremises}
-          onOriginChange={handleOriginChange}
-          title={`${selectedPremises.length} Premises Selected`}
-        />
-      ) : searchQuery ? (
-        <EmptyState message="No matching results found" />
-      ) : (
-        <EmptyState message="Please try searching by address, enforcement number or premises name" />
-      )}
+      <Box sx={{ mt: "20px" }}>
+        {selectedPremises.length > 0 ? (
+          <PremisesTable
+            premises={selectedPremises}
+            selectedPremises={selectedPremises}
+            onPremisesSelect={setSelectedPremises}
+            onOriginChange={handleOriginChange}
+            title={`${selectedPremises.length} Premises Selected`}
+          />
+        ) : searchQuery && availablePremises.length === 0 ? (
+          <EmptyState message="No matching results found" />
+        ) : (
+          <EmptyState message="Please try searching by address, enforcement number or premises name" />
+        )}
+      </Box>
     </Box>
   );
 
-  const renderRecommendTab = () => (
-    <Box sx={styles.searchContainer}>
-      <PremisesTable
-        premises={dummyRecommendedPremises}
-        selectedPremises={selectedPremises}
-        onPremisesSelect={setSelectedPremises}
-        onOriginChange={handleOriginChange}
-        title={`${remainingPremisesNeeded} Premises Recommended`}
-        totalCount={dummyRecommendedPremises.length}
-      />
-    </Box>
-  );
+  const renderRecommendTab = () => {
+    const availableRecommendedPremises = dummyRecommendedPremises.filter(
+      (premise) =>
+        !existingPremises.some(
+          (existing) => existing.enforcementNumber === premise.enforcementNumber
+        )
+    );
+
+    const selectedRecommendedCount = selectedPremises.filter((selected) =>
+      availableRecommendedPremises.some(
+        (recommended) =>
+          recommended.enforcementNumber === selected.enforcementNumber
+      )
+    ).length;
+
+    return (
+      <Box sx={styles.searchContainer}>
+        <PremisesTable
+          premises={availableRecommendedPremises}
+          selectedPremises={selectedPremises}
+          onPremisesSelect={setSelectedPremises}
+          onOriginChange={handleOriginChange}
+          title={`${selectedRecommendedCount} Premises Recommended`}
+          totalCount={availableRecommendedPremises.length}
+        />
+      </Box>
+    );
+  };
 
   return (
     <Dialog
