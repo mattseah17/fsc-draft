@@ -33,7 +33,7 @@ const tableStyles = {
     alignItems: "center",
     padding: "11px 32px",
     borderBottom: "1px solid #EEEEEE",
-    width: "1215px",
+    width: "1230px",
     height: "40px",
   },
   headerCell: {

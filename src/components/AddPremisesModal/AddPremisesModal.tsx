@@ -36,11 +36,7 @@ const tableStyles = {
   title: {
     padding: "11px 32px",
     backgroundColor: "#FFFFFF",
-    borderTop: "1px solid #EEEEEE",
-    borderBottom: "1px solid #EEEEEE",
-    borderLeft: "1px solid #EEEEEE",
-    borderRight: "1px solid #EEEEEE",
-    width: "1190px",
+    border: "1px solid #EEEEEE",
     height: "40px",
     borderTopLeftRadius: "16px",
     borderTopRightRadius: "16px",
@@ -51,7 +47,6 @@ const tableStyles = {
     backgroundColor: "#FFFFFF",
     borderLeft: "1px solid #EEEEEE",
     borderRight: "1px solid #EEEEEE",
-    width: "1254px",
     minHeight: "62px",
   },
   footer: {
@@ -60,7 +55,6 @@ const tableStyles = {
     borderBottom: "1px solid #EEEEEE",
     borderLeft: "1px solid #EEEEEE",
     borderRight: "1px solid #EEEEEE",
-    width: "1190px",
     height: "26px",
     borderBottomLeftRadius: "16px",
     borderBottomRightRadius: "16px",
@@ -186,6 +180,15 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (!open) {
+      setSelectedPremises([]);
+      setSearchQuery("");
+      setFilteredPremises([]);
+      setTabValue(0);
+    }
+  }, [open]);
+
   const handleAutocompleteSelect = (selectedPremise: Premises | null) => {
     if (selectedPremise) {
       if (
@@ -235,15 +238,264 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
     totalRequiredPremises - (existingPremises.length + selectedPremises.length);
 
   const renderSearchTable = () => (
-    <Box sx={{ mt: 3, mb: 3, width: "1254px" }}>
+    <Box sx={{ mt: 3, mb: 3, width: "1244px" }}>
       {selectedPremises.length > 0 ? (
+        <>
+          <Box sx={tableStyles.title}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "16px",
+                fontWeight: 600,
+                lineHeight: "21.79px",
+              }}
+            >
+              {`${selectedPremises.length} Premises Selected`}
+            </Typography>
+          </Box>
+          <Box sx={tableStyles.headerAndContent}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={tableStyles.headerCell}>
+                    <Checkbox
+                      checked={areAllVisiblePremisesSelected(selectedPremises)}
+                      onChange={() =>
+                        handleHeaderCheckboxChange(selectedPremises)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell sx={tableStyles.headerCell}>
+                    Enforcement Number
+                  </TableCell>
+                  <TableCell sx={tableStyles.headerCell}>
+                    Premises Name
+                  </TableCell>
+                  <TableCell sx={tableStyles.headerCell}>Address</TableCell>
+                  <TableCell sx={tableStyles.headerCell}>
+                    Last Inspection Date
+                  </TableCell>
+                  <TableCell sx={tableStyles.headerCell}>
+                    Propensity Score
+                  </TableCell>
+                  <TableCell sx={tableStyles.headerCell}>HRI/POI</TableCell>
+                  <TableCell sx={tableStyles.headerCell}>Origin</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {selectedPremises.map((premise) => (
+                  <TableRow key={premise.enforcementNumber}>
+                    <TableCell sx={tableStyles.cell}>
+                      <Checkbox
+                        checked={selectedPremises.some(
+                          (p) =>
+                            p.enforcementNumber === premise.enforcementNumber
+                        )}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedPremises([...selectedPremises, premise]);
+                          } else {
+                            setSelectedPremises(
+                              selectedPremises.filter(
+                                (p) =>
+                                  p.enforcementNumber !==
+                                  premise.enforcementNumber
+                              )
+                            );
+                          }
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.enforcementNumber}
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.premisesName}
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.address}
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.lastInspectionDate}
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.propensityScore}%
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      {premise.hriPoi}
+                    </TableCell>
+                    <TableCell sx={tableStyles.cell}>
+                      <Select
+                        defaultValue={premise.origin || originOptions[0]}
+                        size="small"
+                        onChange={(event) =>
+                          handleOriginChange(
+                            premise.enforcementNumber,
+                            event.target.value as OriginType
+                          )
+                        }
+                        sx={{
+                          minWidth: 120,
+                          fontFamily: "Noto Sans, sans-serif",
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                          },
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                          },
+                        }}
+                        renderValue={(selected) => (
+                          <Typography
+                            sx={{
+                              fontFamily: "Noto Sans, sans-serif",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                              lineHeight: "16.34px",
+                            }}
+                          >
+                            {selected}
+                          </Typography>
+                        )}
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              "& .MuiMenuItem-root": {
+                                padding: 0,
+                                fontFamily: "Noto Sans, sans-serif",
+                                fontSize: "12px",
+                                fontWeight: 600,
+                                lineHeight: "16.34px",
+                              },
+                            },
+                          },
+                        }}
+                      >
+                        {originOptions.map((option) => (
+                          <MenuItem
+                            key={option}
+                            value={option}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "171px",
+                              fontFamily: "Noto Sans, sans-serif",
+                              fontSize: "12px",
+                              fontWeight: 600,
+                              lineHeight: "16.34px",
+                            }}
+                          >
+                            <Checkbox
+                              checked={
+                                option === (premise.origin || originOptions[0])
+                              }
+                              sx={{ marginRight: 1 }}
+                            />
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+          <Box sx={tableStyles.footer}>
+            <Typography
+              sx={{
+                fontFamily: "Noto Sans, sans-serif",
+                fontSize: "12px",
+                fontWeight: 400,
+                color: "#757575",
+              }}
+            >
+              {`1 - ${selectedPremises.length} of ${selectedPremises.length}`}
+            </Typography>
+          </Box>
+        </>
+      ) : searchQuery ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "400px",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #EEEEEE",
+            borderRadius: "16px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Noto Sans, sans-serif",
+              fontSize: "14px",
+              fontWeight: 400,
+              color: "#757575",
+            }}
+          >
+            No matching results found
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "400px",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #EEEEEE",
+            borderRadius: "16px",
+          }}
+        >
+          <img src={emptyStateImage} alt="Empty state" />
+          <Typography
+            sx={{
+              mt: 2,
+              fontFamily: "Noto Sans, sans-serif",
+              fontSize: "14px",
+              fontWeight: 400,
+              color: "#757575",
+            }}
+          >
+            Please try searching by address, enforcement number or premises name
+          </Typography>
+        </Box>
+      )}
+    </Box>
+  );
+
+  const renderRecommendTable = () => (
+    <Box sx={{ mt: 3, mb: 3, width: "1235px" }}>
+      <Box sx={tableStyles.title}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize: "16px",
+            fontWeight: 600,
+            lineHeight: "21.79px",
+          }}
+        >
+          {`${remainingPremisesNeeded} Premises Recommended`}
+        </Typography>
+      </Box>
+      <Box sx={tableStyles.headerAndContent}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell sx={tableStyles.headerCell}>
                 <Checkbox
-                  checked={areAllVisiblePremisesSelected(selectedPremises)}
-                  onChange={() => handleHeaderCheckboxChange(selectedPremises)}
+                  checked={areAllVisiblePremisesSelected(
+                    dummyRecommendedPremises
+                  )}
+                  onChange={() =>
+                    handleHeaderCheckboxChange(dummyRecommendedPremises)
+                  }
                 />
               </TableCell>
               <TableCell sx={tableStyles.headerCell}>
@@ -262,13 +514,15 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {selectedPremises.map((premise) => (
+            {dummyRecommendedPremises.map((premise, index) => (
               <TableRow key={premise.enforcementNumber}>
                 <TableCell sx={tableStyles.cell}>
                   <Checkbox
-                    checked={selectedPremises.some(
-                      (p) => p.enforcementNumber === premise.enforcementNumber
-                    )}
+                    checked={
+                      selectedPremises.some(
+                        (p) => p.enforcementNumber === premise.enforcementNumber
+                      ) || index < remainingPremisesNeeded
+                    }
                     onChange={(e) => {
                       if (e.target.checked) {
                         setSelectedPremises([...selectedPremises, premise]);
@@ -375,216 +629,19 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
             ))}
           </TableBody>
         </Table>
-      ) : searchQuery ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "400px",
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #EEEEEE",
-            borderRadius: "16px",
-          }}
-        >
-          <Typography
-            sx={{
-              fontFamily: "Noto Sans, sans-serif",
-              fontSize: "14px",
-              fontWeight: 400,
-              color: "#757575",
-            }}
-          >
-            No matching results found
-          </Typography>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "400px",
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #EEEEEE",
-            borderRadius: "16px",
-          }}
-        >
-          <img src={emptyStateImage} alt="Empty state" />
-          <Typography
-            sx={{
-              mt: 2,
-              fontFamily: "Noto Sans, sans-serif",
-              fontSize: "14px",
-              fontWeight: 400,
-              color: "#757575",
-            }}
-          >
-            Please try searching by address, enforcement number or premises name
-          </Typography>
-        </Box>
-      )}
-    </Box>
-  );
-
-  const renderRecommendTable = () => (
-    <Box sx={{ mt: 3, mb: 3, width: "1254px" }}>
-      <Box sx={tableStyles.title}>
+      </Box>
+      <Box sx={tableStyles.footer}>
         <Typography
-          variant="h6"
           sx={{
-            fontSize: "16px",
-            fontWeight: 600,
-            lineHeight: "21.79px",
+            fontFamily: "Noto Sans, sans-serif",
+            fontSize: "12px",
+            fontWeight: 400,
+            color: "#757575",
           }}
         >
-          {`${remainingPremisesNeeded} Premises Recommended`}
+          {`1 - ${remainingPremisesNeeded} of ${dummyRecommendedPremises.length}`}
         </Typography>
       </Box>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={tableStyles.headerCell}>
-              <Checkbox
-                checked={areAllVisiblePremisesSelected(
-                  dummyRecommendedPremises
-                )}
-                onChange={() =>
-                  handleHeaderCheckboxChange(dummyRecommendedPremises)
-                }
-              />
-            </TableCell>
-            <TableCell sx={tableStyles.headerCell}>
-              Enforcement Number
-            </TableCell>
-            <TableCell sx={tableStyles.headerCell}>Premises Name</TableCell>
-            <TableCell sx={tableStyles.headerCell}>Address</TableCell>
-            <TableCell sx={tableStyles.headerCell}>
-              Last Inspection Date
-            </TableCell>
-            <TableCell sx={tableStyles.headerCell}>Propensity Score</TableCell>
-            <TableCell sx={tableStyles.headerCell}>HRI/POI</TableCell>
-            <TableCell sx={tableStyles.headerCell}>Origin</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {dummyRecommendedPremises.map((premise, index) => (
-            <TableRow key={premise.enforcementNumber}>
-              <TableCell sx={tableStyles.cell}>
-                <Checkbox
-                  checked={
-                    selectedPremises.some(
-                      (p) => p.enforcementNumber === premise.enforcementNumber
-                    ) || index < remainingPremisesNeeded
-                  }
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedPremises([...selectedPremises, premise]);
-                    } else {
-                      setSelectedPremises(
-                        selectedPremises.filter(
-                          (p) =>
-                            p.enforcementNumber !== premise.enforcementNumber
-                        )
-                      );
-                    }
-                  }}
-                />
-              </TableCell>
-              <TableCell sx={tableStyles.cell}>
-                {premise.enforcementNumber}
-              </TableCell>
-              <TableCell sx={tableStyles.cell}>
-                {premise.premisesName}
-              </TableCell>
-              <TableCell sx={tableStyles.cell}>{premise.address}</TableCell>
-              <TableCell sx={tableStyles.cell}>
-                {premise.lastInspectionDate}
-              </TableCell>
-              <TableCell sx={tableStyles.cell}>
-                {premise.propensityScore}%
-              </TableCell>
-              <TableCell sx={tableStyles.cell}>{premise.hriPoi}</TableCell>
-              <TableCell sx={tableStyles.cell}>
-                <Select
-                  defaultValue={premise.origin || originOptions[0]}
-                  size="small"
-                  onChange={(event) =>
-                    handleOriginChange(
-                      premise.enforcementNumber,
-                      event.target.value as OriginType
-                    )
-                  }
-                  sx={{
-                    minWidth: 120,
-                    fontFamily: "Noto Sans, sans-serif",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-                  }}
-                  renderValue={(selected) => (
-                    <Typography
-                      sx={{
-                        fontFamily: "Noto Sans, sans-serif",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        lineHeight: "16.34px",
-                      }}
-                    >
-                      {selected}
-                    </Typography>
-                  )}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        "& .MuiMenuItem-root": {
-                          padding: 0,
-                          fontFamily: "Noto Sans, sans-serif",
-                          fontSize: "12px",
-                          fontWeight: 600,
-                          lineHeight: "16.34px",
-                        },
-                      },
-                    },
-                  }}
-                >
-                  {originOptions.map((option) => (
-                    <MenuItem
-                      key={option}
-                      value={option}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        width: "171px",
-                        fontFamily: "Noto Sans, sans-serif",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        lineHeight: "16.34px",
-                      }}
-                    >
-                      <Checkbox
-                        checked={
-                          option === (premise.origin || originOptions[0])
-                        }
-                        sx={{ marginRight: 1 }}
-                      />
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
     </Box>
   );
 
@@ -599,10 +656,12 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
           height: "698px",
           maxWidth: "none",
           maxHeight: "none",
+          display: "flex",
+          flexDirection: "column",
         },
       }}
     >
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3, flex: 1, display: "flex", flexDirection: "column" }}>
         <Box
           sx={{
             display: "flex",
@@ -625,7 +684,7 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
         </Box>
 
         {tabValue === 0 ? (
-          <>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Autocomplete
               fullWidth
               freeSolo
@@ -696,18 +755,28 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
               }}
             />
             {renderSearchTable()}
-          </>
+          </Box>
         ) : (
           <>{renderRecommendTable()}</>
         )}
 
         <Box
-          sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2,
+            mt: "auto",
+            pt: 3,
+          }}
         >
-          <Button variant="text" onClick={onClose}>
+          <Button variant="text" onClick={onClose} sx={{ color: "#757575" }}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            sx={{ bgcolor: "#1976D2" }}
+          >
             Save
           </Button>
         </Box>
