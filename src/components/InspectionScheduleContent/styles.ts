@@ -6,7 +6,6 @@ export const styles = {
       alignItems: "center",
       padding: "11px 32px",
       borderBottom: "1px solid #EEEEEE",
-      width: "1230px",
       height: "40px",
     },
     headerCell: {
@@ -30,9 +29,8 @@ export const styles = {
     footer: {
       display: "flex",
       alignItems: "center",
-      width: "1190px",
       height: "40px",
-      padding: "16px 1142px 16px 32px",
+      padding: "16px 32px",
     },
   },
   container: {
@@ -55,6 +53,8 @@ export const styles = {
   tableContainer: {
     border: "1px solid #e0e0e0",
     borderRadius: "16px",
+    width: "100%",
+    overflow: "auto",
   },
   emptyState: {
     display: "flex",

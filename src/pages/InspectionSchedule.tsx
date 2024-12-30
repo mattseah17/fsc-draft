@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
 import SideNav from "../components/SideNav/SideNav";
-import TopNav from "../components/TopNav/TopNav";
 import InspectionScheduleContent from "../components/InspectionScheduleContent/InspectionScheduleContent";
 
 const InspectionSchedule: React.FC = () => {
@@ -16,7 +15,6 @@ const InspectionSchedule: React.FC = () => {
           overflow: "hidden",
         }}
       >
-        <TopNav />
         <Box sx={{ marginTop: "48px" }}>
           <InspectionScheduleContent />
         </Box>

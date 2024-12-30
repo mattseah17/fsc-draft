@@ -1,14 +1,17 @@
 import React from "react";
-import { Box, Typography, Avatar } from "@mui/material";
+import { Box, Typography, Avatar, Breadcrumbs, Link } from "@mui/material";
 
-const TopNav: React.FC = () => {
+interface TopNavProps {
+  page?: string;
+}
+
+const TopNav: React.FC<TopNavProps> = ({ page }) => {
   return (
     <Box
       sx={{
         position: "fixed",
         top: 0,
-        zIndex: 1100,
-        width: "1300px",
+        width: "1301px",
         height: "32px",
         minHeight: "32px",
         maxHeight: "32px",
@@ -20,17 +23,42 @@ const TopNav: React.FC = () => {
         justifyContent: "space-between",
       }}
     >
-      <Typography
-        variant="h6"
+      <Breadcrumbs
+        separator=">"
         sx={{
-          fontFamily: "Noto Sans, sans-serif",
-          fontWeight: 500,
-          fontSize: "12px",
-          lineHeight: "16px",
+          "& .MuiBreadcrumbs-separator": {
+            fontSize: "12px",
+            color: "#757575",
+          },
         }}
       >
-        Auto Scheduler
-      </Typography>
+        <Link
+          href="#"
+          sx={{
+            fontFamily: "Noto Sans, sans-serif",
+            fontWeight: 500,
+            fontSize: "12px",
+            lineHeight: "16px",
+            color: "#757575",
+            textDecoration: "none",
+          }}
+        >
+          Auto Scheduler
+        </Link>
+        {page && (
+          <Typography
+            sx={{
+              fontFamily: "Noto Sans, sans-serif",
+              fontWeight: 500,
+              fontSize: "12px",
+              lineHeight: "16px",
+              color: "#212121",
+            }}
+          >
+            {page}
+          </Typography>
+        )}
+      </Breadcrumbs>
       <Avatar
         alt="User Avatar"
         src="/path/to/user/avatar.jpg"
