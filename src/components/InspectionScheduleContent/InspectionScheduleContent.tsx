@@ -29,6 +29,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styles } from "./styles";
 import TopNav from "../TopNav/TopNav";
+import AssignRotaModal from "../AssignRotaModal/AssignRotaModal";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
 
 const InspectionScheduleContent: React.FC = () => {
   const [isAssignMode, setIsAssignMode] = useState(false);
@@ -38,6 +43,11 @@ const InspectionScheduleContent: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [newlyAddedCount, setNewlyAddedCount] = useState(0);
+  const [showAssignToast, setShowAssignToast] = useState(false);
+  const [assignMessage, setAssignMessage] = useState("");
+  const [selectedPremises, setSelectedPremises] = useState<string[]>([]);
+  const [openAssignModal, setOpenAssignModal] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -88,95 +98,79 @@ const InspectionScheduleContent: React.FC = () => {
     handleEditMenuClose();
   };
 
-  const renderTable = () => (
-    <Box>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {isAssignMode && (
-              <>
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
-                <TableCell sx={styles.table.headerCell}>ROTA</TableCell>
-              </>
-            )}
-            <TableCell sx={styles.table.headerCell}>
-              Enforcement Number
-            </TableCell>
-            <TableCell sx={styles.table.headerCell}>Premises Name</TableCell>
-            <TableCell sx={styles.table.headerCell}>Address</TableCell>
-            <TableCell sx={styles.table.headerCell}>
-              Last Inspection Date
-            </TableCell>
-            <TableCell sx={styles.table.headerCell}>Propensity Score</TableCell>
-            <TableCell sx={styles.table.headerCell}>HRI/POI</TableCell>
-            <TableCell sx={styles.table.headerCell}>Origin</TableCell>
-            <TableCell sx={styles.table.headerCell}>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {premises.map((premise) => (
-            <TableRow key={premise.enforcementNumber}>
-              {isAssignMode && (
-                <>
-                  <TableCell padding="checkbox">
-                    <Checkbox />
-                  </TableCell>
-                  <TableCell>
-                    <Select
-                      defaultValue=""
-                      displayEmpty
-                      sx={{ minWidth: 120 }}
-                      renderValue={(selected) => {
-                        if (selected === "") {
-                          return (
-                            <Typography color="text.secondary">
-                              Select ROTA
-                            </Typography>
-                          );
-                        }
-                        return selected;
-                      }}
-                    >
-                      <MenuItem value="" disabled>
-                        Select ROTA
-                      </MenuItem>
-                      <MenuItem value="ROTA 1">ROTA 1</MenuItem>
-                      <MenuItem value="ROTA 2">ROTA 2</MenuItem>
-                      <MenuItem value="ROTA 3">ROTA 3</MenuItem>
-                    </Select>
-                  </TableCell>
-                </>
-              )}
-              <TableCell sx={styles.table.cell}>
-                {premise.enforcementNumber}
-              </TableCell>
-              <TableCell sx={styles.table.cell}>
-                {premise.premisesName}
-              </TableCell>
-              <TableCell sx={styles.table.cell}>{premise.address}</TableCell>
-              <TableCell sx={styles.table.cell}>
-                {premise.lastInspectionDate}
-              </TableCell>
-              <TableCell sx={styles.table.cell}>
-                {premise.propensityScore}%
-              </TableCell>
-              <TableCell sx={styles.table.cell}>{premise.hriPoi}</TableCell>
-              <TableCell sx={styles.table.cell}>{premise.origin}</TableCell>
-              <TableCell sx={styles.table.cell}>
-                <IconButton
-                  onClick={() => handleDeletePremise(premise.enforcementNumber)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Box>
-  );
+  const getRotaColor = (rotaNumber: number) => {
+    switch (rotaNumber) {
+      case 1:
+        return "#1976d2"; // Blue
+      case 2:
+        return "#7b1fa2"; // Purple
+      case 3:
+        return "#ed6c02"; // Orange
+      default:
+        return "#grey";
+    }
+  };
+
+  const handleRotaAssignment = (enforcementNumber: string, rota: string) => {
+    setPremises(
+      premises.map((premise) =>
+        premise.enforcementNumber === enforcementNumber
+          ? { ...premise, assignedRota: rota }
+          : premise
+      )
+    );
+    if (rota) {
+      setAssignMessage(`Premises assigned to ${rota}`);
+      setShowAssignToast(true);
+    }
+  };
+
+  const handleCheckboxChange = (enforcementNumber: string) => {
+    setSelectedPremises((prev) =>
+      prev.includes(enforcementNumber)
+        ? prev.filter((id) => id !== enforcementNumber)
+        : [...prev, enforcementNumber]
+    );
+  };
+
+  const handleBulkAssign = (rota: string) => {
+    setPremises(
+      premises.map((premise) =>
+        selectedPremises.includes(premise.enforcementNumber)
+          ? { ...premise, assignedRota: rota }
+          : premise
+      )
+    );
+
+    setAssignMessage(`${selectedPremises.length} premises assigned to ${rota}`);
+    setShowAssignToast(true);
+
+    setSelectedPremises([]);
+    setOpenAssignModal(false);
+  };
+
+  const getRotaPremisesCount = (rotaNumber: number) => {
+    return premises.filter(
+      (premise) => premise.assignedRota === `ROTA ${rotaNumber}`
+    ).length;
+  };
+
+  const areAllPremisesAssigned = () => {
+    return premises.every((premise) => premise.assignedRota);
+  };
+
+  const handleConfirmNotify = () => {
+    setOpenConfirmModal(true);
+  };
+
+  const handleConfirmModalClose = () => {
+    setOpenConfirmModal(false);
+  };
+
+  const handleConfirm = () => {
+    // Add your confirmation logic here
+    setOpenConfirmModal(false);
+  };
 
   return (
     <>
@@ -222,7 +216,9 @@ const InspectionScheduleContent: React.FC = () => {
                 {`R${index + 1}`}
               </Avatar>
               <Box>
-                <Typography variant="body2">0 Premises</Typography>
+                <Typography variant="body2">
+                  {getRotaPremisesCount(index + 1)} Premises
+                </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {rota}
                 </Typography>
@@ -231,7 +227,7 @@ const InspectionScheduleContent: React.FC = () => {
           ))}
         </Box>
 
-        <Box sx={styles.tableContainer}>
+        <Box sx={() => styles.tableContainer({ isAssignMode })}>
           <Box sx={styles.table.title}>
             <Typography
               variant="h6"
@@ -246,17 +242,23 @@ const InspectionScheduleContent: React.FC = () => {
                 : "Dec 2024 Inspection Schedule"}
             </Typography>
             {isAssignMode ? (
-              <Button
-                variant="contained"
-                disabled
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  lineHeight: "21.79px",
-                }}
-              >
-                Confirm & Notify
-              </Button>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                {selectedPremises.length > 0 && (
+                  <Button
+                    variant="outlined"
+                    onClick={() => setOpenAssignModal(true)}
+                  >
+                    Assign ROTA
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  disabled={!areAllPremisesAssigned()}
+                  onClick={handleConfirmNotify}
+                >
+                  Confirm & Notify
+                </Button>
+              </Box>
             ) : premises.length === 0 ? (
               <Button
                 startIcon={<AddIcon />}
@@ -344,7 +346,192 @@ const InspectionScheduleContent: React.FC = () => {
             </Box>
           ) : (
             <>
-              {renderTable()}
+              <Box sx={styles.table.wrapper}>
+                <Table stickyHeader>
+                  <TableHead>
+                    <TableRow>
+                      {isAssignMode && (
+                        <>
+                          <TableCell
+                            padding="checkbox"
+                            sx={styles.table.checkboxCell}
+                          >
+                            <Checkbox />
+                          </TableCell>
+                          <TableCell sx={styles.table.headerCell}>
+                            ROTA
+                          </TableCell>
+                        </>
+                      )}
+                      <TableCell sx={styles.table.headerCell}>
+                        Enforcement Number
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        Premises Name
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        Address
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        Last Inspection Date
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        Propensity Score
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        HRI/POI
+                      </TableCell>
+                      <TableCell sx={styles.table.headerCell}>Origin</TableCell>
+                      <TableCell sx={styles.table.headerCell}>
+                        Actions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {premises.map((premise) => (
+                      <TableRow key={premise.enforcementNumber}>
+                        {isAssignMode && (
+                          <>
+                            <TableCell
+                              padding="checkbox"
+                              sx={styles.table.checkboxCell}
+                            >
+                              <Checkbox
+                                checked={selectedPremises.includes(
+                                  premise.enforcementNumber
+                                )}
+                                onChange={() =>
+                                  handleCheckboxChange(
+                                    premise.enforcementNumber
+                                  )
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                value={premise.assignedRota || ""}
+                                displayEmpty
+                                sx={{
+                                  minWidth: 120,
+                                  height: "26px",
+                                  fontSize: "12px",
+                                  "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                  },
+                                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                  },
+                                  "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                    {
+                                      border: "none",
+                                    },
+                                }}
+                                onChange={(event) =>
+                                  handleRotaAssignment(
+                                    premise.enforcementNumber,
+                                    event.target.value
+                                  )
+                                }
+                                renderValue={(selected) => {
+                                  if (selected === "") {
+                                    return (
+                                      <Typography
+                                        color="text.secondary"
+                                        sx={{ fontSize: "12px" }}
+                                      >
+                                        Select ROTA
+                                      </Typography>
+                                    );
+                                  }
+                                  const rotaNumber = parseInt(
+                                    selected.split(" ")[1]
+                                  );
+                                  return (
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                      }}
+                                    >
+                                      <Avatar
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          fontSize: 12,
+                                          bgcolor: getRotaColor(rotaNumber),
+                                        }}
+                                      >
+                                        {`R${rotaNumber}`}
+                                      </Avatar>
+                                      {selected}
+                                    </Box>
+                                  );
+                                }}
+                              >
+                                <MenuItem value="">Select ROTA</MenuItem>
+                                {[1, 2, 3].map((number) => (
+                                  <MenuItem
+                                    key={number}
+                                    value={`ROTA ${number}`}
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1,
+                                    }}
+                                  >
+                                    <Avatar
+                                      sx={{
+                                        width: 20,
+                                        height: 20,
+                                        fontSize: 12,
+                                        bgcolor: getRotaColor(number),
+                                      }}
+                                    >
+                                      {`R${number}`}
+                                    </Avatar>
+                                    {`ROTA ${number}`}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                          </>
+                        )}
+                        <TableCell sx={styles.table.cell}>
+                          {premise.enforcementNumber}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.premisesName}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.address}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.lastInspectionDate}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.propensityScore}%
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.hriPoi}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          {premise.origin}
+                        </TableCell>
+                        <TableCell sx={styles.table.cell}>
+                          <IconButton
+                            onClick={() =>
+                              handleDeletePremise(premise.enforcementNumber)
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
               <Box sx={styles.table.footer}>
                 <Typography variant="caption" color="text.secondary">
                   {`1 - ${premises.length} of ${premises.length}`}
@@ -362,6 +549,52 @@ const InspectionScheduleContent: React.FC = () => {
           totalRequiredPremises={39}
         />
 
+        <AssignRotaModal
+          open={openAssignModal}
+          onClose={() => setOpenAssignModal(false)}
+          onSave={handleBulkAssign}
+        />
+
+        <Dialog
+          open={openConfirmModal}
+          onClose={handleConfirmModalClose}
+          sx={{
+            "& .MuiDialog-paper": {
+              width: "440px",
+              height: "196px",
+              borderRadius: "16px",
+              gap: "10px",
+            },
+          }}
+        >
+          <DialogTitle sx={{ pb: 1 }}>Confirm & Notify?</DialogTitle>
+          <DialogContent
+            sx={{
+              pb: 3,
+              overflowY: "hidden",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "15px",
+                lineHeight: "21.79px",
+                fontWeight: 400,
+              }}
+            >
+              Are you sure you want to notify the respective ROTA commander to
+              verify the premises availability?
+            </Typography>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, pb: 3 }}>
+            <Button onClick={handleConfirmModalClose} variant="outlined">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirm} variant="contained">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         {/* Success Toast */}
         <Snackbar
           open={showToast}
@@ -373,6 +606,18 @@ const InspectionScheduleContent: React.FC = () => {
             Added {newlyAddedCount}{" "}
             {newlyAddedCount === 1 ? "premise" : "premises"} to inspection
             schedule
+          </Alert>
+        </Snackbar>
+
+        {/* Add new toast for assignment */}
+        <Snackbar
+          open={showAssignToast}
+          autoHideDuration={3000}
+          onClose={() => setShowAssignToast(false)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="success" sx={styles.successAlert}>
+            {assignMessage}
           </Alert>
         </Snackbar>
       </Box>

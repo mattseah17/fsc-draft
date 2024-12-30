@@ -1,3 +1,8 @@
+// Create a type for dynamic styles
+type TableContainerStyleProps = {
+  isAssignMode?: boolean;
+};
+
 export const styles = {
   table: {
     title: {
@@ -7,30 +12,47 @@ export const styles = {
       padding: "11px 32px",
       borderBottom: "1px solid #EEEEEE",
       height: "40px",
+      backgroundColor: "white",
+      borderTopLeftRadius: "16px",
+      borderTopRightRadius: "16px",
     },
     headerCell: {
-      padding: "16px 20px 16px 32px",
+      padding: "16px 32px",
       fontFamily: "Noto Sans, sans-serif",
       fontSize: "12px",
       fontWeight: 600,
       lineHeight: "16.34px",
       textAlign: "left" as const,
       borderBottom: "1px solid #EEEEEE",
+      backgroundColor: "white",
+      position: "sticky" as const,
+      top: 0,
+      zIndex: 1,
+      whiteSpace: "nowrap",
     },
     cell: {
-      padding: "8px 40px 8px 32px",
-      fontFamily: "Noto Sans, sans-serif",
-      fontSize: "12px",
-      fontWeight: 600,
-      lineHeight: "16.34px",
-      textAlign: "left" as const,
-      borderBottom: "1px solid #EEEEEE",
+      padding: "16px 32px",
+      whiteSpace: "nowrap",
+    },
+    checkboxCell: {
+      padding: "16px 0 16px 32px",
+    },
+    wrapper: {
+      flex: 1,
+      overflow: "auto",
+      "& .MuiTable-root": {
+        minWidth: "1200px",
+      },
     },
     footer: {
       display: "flex",
       alignItems: "center",
-      height: "40px",
+      height: "25px",
       padding: "16px 32px",
+      borderTop: "1px solid #EEEEEE",
+      backgroundColor: "white",
+      borderBottomLeftRadius: "16px",
+      borderBottomRightRadius: "16px",
     },
   },
   container: {
@@ -50,12 +72,14 @@ export const styles = {
     alignItems: "center",
     gap: 2,
   },
-  tableContainer: {
+  tableContainer: (props: TableContainerStyleProps = {}) => ({
     border: "1px solid #e0e0e0",
     borderRadius: "16px",
     width: "100%",
-    overflow: "auto",
-  },
+    height: props.isAssignMode ? "550px" : "465px",
+    display: "flex",
+    flexDirection: "column" as const,
+  }),
   emptyState: {
     display: "flex",
     flexDirection: "column",

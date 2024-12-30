@@ -4,11 +4,7 @@ export interface Premises {
   address: string;
   lastInspectionDate: string;
   propensityScore: number;
-  hriPoi: "HRI" | "POI";
-  origin:
-    | "Ops Survey"
-    | "Cert Audit"
-    | "HRI Exercise"
-    | "Outside Drill"
-    | "Adhoc";
+  hriPoi: string;
+  origin: string;
+  assignedRota?: string;
 }
