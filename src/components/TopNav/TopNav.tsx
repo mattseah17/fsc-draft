@@ -136,7 +136,7 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           <Typography
             sx={{
               fontSize: "12px",
-              color: "#757575",
+              color: "#454545",
               mb: 0.5,
             }}
           >
