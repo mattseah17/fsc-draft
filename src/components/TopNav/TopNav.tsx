@@ -154,13 +154,13 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <PersonIcon sx={{ fontSize: 20, color: "#757575" }} />
+            <PersonIcon sx={{ fontSize: 20, color: "#454545" }} />
             <Typography sx={{ fontSize: "12px", padding: "4px 20px" }}>
               Enforcement OIC
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <LocationOnIcon sx={{ fontSize: 20, color: "#757575" }} />
+            <LocationOnIcon sx={{ fontSize: 20, color: "#454545" }} />
             <Typography sx={{ fontSize: "12px", padding: "4px 20px" }}>
               Sengkang Fire Station
             </Typography>
@@ -177,7 +177,7 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
             }}
             onClick={handleClose}
           >
-            <LogoutIcon sx={{ fontSize: 20, color: "#757575" }} />
+            <LogoutIcon sx={{ fontSize: 20, color: "#454545" }} />
             <Typography sx={{ fontSize: "12px", padding: "4px 20px" }}>
               Logout
             </Typography>
