@@ -34,6 +34,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 const InspectionScheduleContent: React.FC = () => {
   const [isAssignMode, setIsAssignMode] = useState(false);
@@ -229,18 +231,62 @@ const InspectionScheduleContent: React.FC = () => {
 
         <Box sx={() => styles.tableContainer({ isAssignMode })}>
           <Box sx={styles.table.title}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontSize: "16px",
-                fontWeight: 600,
-                lineHeight: "21.79px",
-              }}
-            >
-              {isAssignMode
-                ? "Assign Premises to ROTA"
-                : "Dec 2024 Inspection Schedule"}
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  lineHeight: "21.79px",
+                }}
+              >
+                {isAssignMode
+                  ? "Assign Premises to ROTA"
+                  : "Dec 2024 Inspection Schedule"}
+              </Typography>
+              <Tooltip
+                title={
+                  <Typography
+                    sx={{
+                      fontFamily: "Noto Sans",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "19.07px",
+                      textAlign: "left",
+                      textUnderlinePosition: "from-font",
+                      textDecorationSkipInk: "none",
+                    }}
+                  >
+                    Premises data and propensity scores refresh automatically
+                    every month. It is recommended to start planning from the
+                    21th of each month.
+                  </Typography>
+                }
+                placement="right"
+                sx={{
+                  cursor: "pointer",
+                  "& .MuiTooltip-tooltip": {
+                    width: "300px",
+                    height: "100px",
+                    padding: "12px 16px",
+                    gap: "10px",
+                    borderRadius: "8px",
+                    backgroundColor: "#454545",
+                    opacity: 1,
+                  },
+                }}
+              >
+                <InfoOutlinedIcon
+                  sx={{
+                    fontSize: 16,
+                    color: "text.secondary",
+                    "&:hover": {
+                      color: "primary.main",
+                    },
+                  }}
+                />
+              </Tooltip>
+            </Box>
             {isAssignMode ? (
               <Box sx={{ display: "flex", gap: 2 }}>
                 {selectedPremises.length > 0 && (
