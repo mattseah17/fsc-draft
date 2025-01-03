@@ -50,6 +50,7 @@ const InspectionScheduleContent: React.FC = () => {
   const [selectedPremises, setSelectedPremises] = useState<string[]>([]);
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -170,8 +171,10 @@ const InspectionScheduleContent: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    // Add your confirmation logic here
+    setIsConfirmed(true);
     setOpenConfirmModal(false);
+    setShowAssignToast(true);
+    setAssignMessage("Notified ROTA Commander to verify premises availability");
   };
 
   return (
@@ -396,18 +399,19 @@ const InspectionScheduleContent: React.FC = () => {
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      {isAssignMode && (
-                        <>
-                          <TableCell
-                            padding="checkbox"
-                            sx={styles.table.checkboxCell}
-                          >
-                            <Checkbox />
-                          </TableCell>
-                          <TableCell sx={styles.table.headerCell}>
-                            ROTA
-                          </TableCell>
-                        </>
+                      {isAssignMode && !isConfirmed && (
+                        <TableCell
+                          padding="checkbox"
+                          sx={styles.table.checkboxCell}
+                        >
+                          <Checkbox />
+                        </TableCell>
+                      )}
+                      <TableCell sx={styles.table.headerCell}>ROTA</TableCell>
+                      {isConfirmed && (
+                        <TableCell sx={styles.table.headerCell}>
+                          Availability
+                        </TableCell>
                       )}
                       <TableCell sx={styles.table.headerCell}>
                         Enforcement Number
@@ -436,112 +440,131 @@ const InspectionScheduleContent: React.FC = () => {
                   <TableBody>
                     {premises.map((premise) => (
                       <TableRow key={premise.enforcementNumber}>
-                        {isAssignMode && (
-                          <>
-                            <TableCell
-                              padding="checkbox"
-                              sx={styles.table.checkboxCell}
-                            >
-                              <Checkbox
-                                checked={selectedPremises.includes(
-                                  premise.enforcementNumber
-                                )}
-                                onChange={() =>
-                                  handleCheckboxChange(
-                                    premise.enforcementNumber
-                                  )
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                value={premise.assignedRota || ""}
-                                displayEmpty
-                                sx={{
-                                  minWidth: 120,
-                                  height: "26px",
-                                  fontSize: "12px",
-                                  "& .MuiOutlinedInput-notchedOutline": {
-                                    border: "none",
-                                  },
-                                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                                    border: "none",
-                                  },
-                                  "&.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                    {
-                                      border: "none",
-                                    },
-                                }}
-                                onChange={(event) =>
-                                  handleRotaAssignment(
-                                    premise.enforcementNumber,
-                                    event.target.value
-                                  )
-                                }
-                                renderValue={(selected) => {
-                                  if (selected === "") {
-                                    return (
-                                      <Typography
-                                        color="text.secondary"
-                                        sx={{ fontSize: "12px" }}
-                                      >
-                                        Select ROTA
-                                      </Typography>
-                                    );
-                                  }
-                                  const rotaNumber = parseInt(
-                                    selected.split(" ")[1]
-                                  );
-                                  return (
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 1,
-                                      }}
-                                    >
-                                      <Avatar
-                                        sx={{
-                                          width: 20,
-                                          height: 20,
-                                          fontSize: 12,
-                                          bgcolor: getRotaColor(rotaNumber),
-                                        }}
-                                      >
-                                        {`R${rotaNumber}`}
-                                      </Avatar>
-                                      {selected}
-                                    </Box>
-                                  );
-                                }}
-                              >
-                                <MenuItem value="">Select ROTA</MenuItem>
-                                {[1, 2, 3].map((number) => (
-                                  <MenuItem
-                                    key={number}
-                                    value={`ROTA ${number}`}
+                        {isAssignMode && !isConfirmed && (
+                          <TableCell
+                            padding="checkbox"
+                            sx={styles.table.checkboxCell}
+                          >
+                            <Checkbox
+                              checked={selectedPremises.includes(
+                                premise.enforcementNumber
+                              )}
+                              onChange={() =>
+                                handleCheckboxChange(premise.enforcementNumber)
+                              }
+                            />
+                          </TableCell>
+                        )}
+                        <TableCell>
+                          <Select
+                            value={premise.assignedRota || ""}
+                            displayEmpty
+                            sx={{
+                              minWidth: 120,
+                              height: "26px",
+                              fontSize: "12px",
+                              "& .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                              },
+                              "&:hover .MuiOutlinedInput-notchedOutline": {
+                                border: "none",
+                              },
+                              "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                {
+                                  border: "none",
+                                },
+                            }}
+                            onChange={(event) =>
+                              handleRotaAssignment(
+                                premise.enforcementNumber,
+                                event.target.value
+                              )
+                            }
+                            renderValue={(selected) => {
+                              if (selected === "") {
+                                return (
+                                  <Typography
+                                    color="text.secondary"
+                                    sx={{ fontSize: "12px", color: "##1D1D1D" }}
+                                  >
+                                    Select ROTA
+                                  </Typography>
+                                );
+                              }
+                              const rotaNumber = parseInt(
+                                selected.split(" ")[1]
+                              );
+                              return (
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Avatar
                                     sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: 1,
+                                      width: 20,
+                                      height: 20,
+                                      fontSize: 12,
+                                      bgcolor: getRotaColor(rotaNumber),
                                     }}
                                   >
-                                    <Avatar
-                                      sx={{
-                                        width: 20,
-                                        height: 20,
-                                        fontSize: 12,
-                                        bgcolor: getRotaColor(number),
-                                      }}
-                                    >
-                                      {`R${number}`}
-                                    </Avatar>
-                                    {`ROTA ${number}`}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                          </>
+                                    {`R${rotaNumber}`}
+                                  </Avatar>
+                                  {selected}
+                                </Box>
+                              );
+                            }}
+                          >
+                            <MenuItem value="">Select ROTA</MenuItem>
+                            {[1, 2, 3].map((number) => (
+                              <MenuItem
+                                key={number}
+                                value={`ROTA ${number}`}
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <Avatar
+                                  sx={{
+                                    width: 20,
+                                    height: 20,
+                                    fontSize: 12,
+                                    bgcolor: getRotaColor(number),
+                                  }}
+                                >
+                                  {`R${number}`}
+                                </Avatar>
+                                {`ROTA ${number}`}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </TableCell>
+                        {isConfirmed && (
+                          <TableCell>
+                            <Box
+                              sx={{
+                                width: "64px",
+                                height: "24px",
+                                padding: "4px 8px",
+                                gap: "6px",
+                                borderRadius: "4px",
+                                backgroundColor: "#FFECCC",
+                                color: "#953D00",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "12px",
+                                fontWeight: 500,
+                                lineHeight: "16.34px",
+                              }}
+                            >
+                              Pending
+                            </Box>
+                          </TableCell>
                         )}
                         <TableCell sx={styles.table.cell}>
                           {premise.enforcementNumber}
