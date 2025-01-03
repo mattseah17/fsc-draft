@@ -181,6 +181,8 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     setOpenConfirmModal(false);
     setShowAssignToast(true);
     setAssignMessage("Notified ROTA Commander to verify premises availability");
+    setIsAssignMode(false);
+    onAssignModeChange(false);
   };
 
   return (
@@ -252,48 +254,50 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   ? "Assign Premises to ROTA"
                   : "Dec 2024 Inspection Schedule"}
               </Typography>
-              <Tooltip
-                title={
-                  <Typography
-                    sx={{
-                      fontFamily: "Noto Sans",
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      lineHeight: "19.07px",
-                      textAlign: "left",
-                      textUnderlinePosition: "from-font",
-                      textDecorationSkipInk: "none",
-                    }}
-                  >
-                    Premises data and propensity scores refresh automatically
-                    every month. It is recommended to start planning from the
-                    21th of each month.
-                  </Typography>
-                }
-                placement="right"
-                sx={{
-                  cursor: "pointer",
-                  "& .MuiTooltip-tooltip": {
-                    width: "300px",
-                    height: "100px",
-                    padding: "12px 16px",
-                    gap: "10px",
-                    borderRadius: "8px",
-                    backgroundColor: "#454545",
-                    opacity: 1,
-                  },
-                }}
-              >
-                <InfoOutlinedIcon
+              {!isAssignMode && (
+                <Tooltip
+                  title={
+                    <Typography
+                      sx={{
+                        fontFamily: "Noto Sans",
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        lineHeight: "19.07px",
+                        textAlign: "left",
+                        textUnderlinePosition: "from-font",
+                        textDecorationSkipInk: "none",
+                      }}
+                    >
+                      Premises data and propensity scores refresh automatically
+                      every month. It is recommended to start planning from the
+                      21th of each month.
+                    </Typography>
+                  }
+                  placement="right"
                   sx={{
-                    fontSize: 16,
-                    color: "text.secondary",
-                    "&:hover": {
-                      color: "primary.main",
+                    cursor: "pointer",
+                    "& .MuiTooltip-tooltip": {
+                      width: "300px",
+                      height: "100px",
+                      padding: "12px 16px",
+                      gap: "10px",
+                      borderRadius: "8px",
+                      backgroundColor: "#454545",
+                      opacity: 1,
                     },
                   }}
-                />
-              </Tooltip>
+                >
+                  <InfoOutlinedIcon
+                    sx={{
+                      fontSize: 16,
+                      color: "text.secondary",
+                      "&:hover": {
+                        color: "primary.main",
+                      },
+                    }}
+                  />
+                </Tooltip>
+              )}
             </Box>
             {isAssignMode ? (
               <Box sx={{ display: "flex", gap: 2 }}>
@@ -369,7 +373,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                 </Menu>
                 <Button
                   variant="contained"
-                  disabled
+                  disabled={!isConfirmed}
                   sx={{
                     fontSize: "14px",
                     fontWeight: 600,
@@ -404,16 +408,16 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      {isAssignMode && !isConfirmed && (
+                      {isAssignMode && !isConfirmed ? (
                         <TableCell
                           padding="checkbox"
                           sx={styles.table.checkboxCell}
                         >
                           <Checkbox />
                         </TableCell>
-                      )}
+                      ) : null}
                       <TableCell sx={styles.table.headerCell}>ROTA</TableCell>
-                      {isConfirmed && (
+                      {!isAssignMode && isConfirmed && (
                         <TableCell sx={styles.table.headerCell}>
                           Availability
                         </TableCell>
@@ -445,7 +449,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   <TableBody>
                     {premises.map((premise) => (
                       <TableRow key={premise.enforcementNumber}>
-                        {isAssignMode && !isConfirmed && (
+                        {isAssignMode && !isConfirmed ? (
                           <TableCell
                             padding="checkbox"
                             sx={styles.table.checkboxCell}
@@ -459,7 +463,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                               }
                             />
                           </TableCell>
-                        )}
+                        ) : null}
                         <TableCell>
                           <Select
                             value={premise.assignedRota || ""}
@@ -548,7 +552,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                             ))}
                           </Select>
                         </TableCell>
-                        {isConfirmed && (
+                        {!isAssignMode && isConfirmed && (
                           <TableCell>
                             <Box
                               sx={{
