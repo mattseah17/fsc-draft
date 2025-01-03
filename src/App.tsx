@@ -1,18 +1,18 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import InspectionSchedule from "./pages/InspectionSchedule";
+import MainPage from "./pages/MainPage";
 
 const theme = createTheme({
   typography: {
     fontFamily: '"Noto Sans", sans-serif',
   },
-  // You can add more theme customizations here
+  // Add more theme customizations here
 });
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <InspectionSchedule />
+      <MainPage />
     </ThemeProvider>
   );
 }

@@ -11,7 +11,12 @@ import {
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 
-const SideNav: React.FC = () => {
+interface SideNavProps {
+  onRouteChange: (route: "dashboard" | "scheduler") => void;
+  currentRoute: "dashboard" | "scheduler";
+}
+
+const SideNav: React.FC<SideNavProps> = ({ onRouteChange, currentRoute }) => {
   return (
     <Drawer
       variant="permanent"
@@ -58,6 +63,8 @@ const SideNav: React.FC = () => {
       </Box>
       <List>
         <ListItemButton
+          onClick={() => onRouteChange("scheduler")}
+          selected={currentRoute === "scheduler"}
           sx={{
             width: "86px",
             height: "74px",
@@ -111,6 +118,8 @@ const SideNav: React.FC = () => {
           />
         </ListItemButton>
         <ListItemButton
+          onClick={() => onRouteChange("dashboard")}
+          selected={currentRoute === "dashboard"}
           sx={{
             width: "86px",
             height: "58px",

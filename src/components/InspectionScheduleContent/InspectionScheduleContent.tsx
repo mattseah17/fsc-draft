@@ -28,7 +28,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styles } from "./styles";
-import TopNav from "../TopNav/TopNav";
 import AssignRotaModal from "../AssignRotaModal/AssignRotaModal";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -37,7 +36,13 @@ import DialogActions from "@mui/material/DialogActions";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 
-const InspectionScheduleContent: React.FC = () => {
+interface InspectionScheduleContentProps {
+  onAssignModeChange: (isAssignMode: boolean) => void;
+}
+
+const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
+  onAssignModeChange,
+}) => {
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [openModal, setOpenModal] = useState(false);
@@ -98,6 +103,7 @@ const InspectionScheduleContent: React.FC = () => {
 
   const handleAssignPremises = () => {
     setIsAssignMode(true);
+    onAssignModeChange(true);
     handleEditMenuClose();
   };
 
@@ -179,7 +185,6 @@ const InspectionScheduleContent: React.FC = () => {
 
   return (
     <>
-      <TopNav page={isAssignMode ? "Assign Premises" : undefined} />
       <Box sx={styles.container}>
         {!isAssignMode && (
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
