@@ -23,7 +23,7 @@ import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import AddPremisesModal from "../AddPremisesModal/AddPremisesModal";
-import { Premises } from "../../types/premises";
+import { Premise } from "../../types/premises";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -35,10 +35,31 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
-
+import { AvailabilityStatus } from "../../types/premises";
 interface InspectionScheduleContentProps {
   onAssignModeChange: (isAssignMode: boolean) => void;
 }
+
+const getAvailabilityStyle = (status?: AvailabilityStatus) => {
+  switch (status) {
+    case "available":
+      return {
+        backgroundColor: "#CEF8E0",
+        color: "#007A4D",
+      };
+    case "unavailable":
+      return {
+        backgroundColor: "#FFEBE7",
+        color: "#D31510",
+      };
+    case "pending":
+    default:
+      return {
+        backgroundColor: "#FFECCC",
+        color: "#953D00",
+      };
+  }
+};
 
 const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   onAssignModeChange,
@@ -46,7 +67,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const [premises, setPremises] = useState<Premises[]>([]);
+  const [premises, setPremises] = useState<Premise[]>([]);
   const [showToast, setShowToast] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [newlyAddedCount, setNewlyAddedCount] = useState(0);
@@ -64,7 +85,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const handleSavePremises = (newPremises: Premises[]) => {
+  const handleSavePremises = (newPremises: Premise[]) => {
     setPremises((prevPremises) => {
       const combinedPremises = [...prevPremises];
       let addedCount = 0;
@@ -177,6 +198,12 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   };
 
   const handleConfirm = () => {
+    setPremises(
+      premises.map((premise) => ({
+        ...premise,
+        availability: "pending" as AvailabilityStatus,
+      }))
+    );
     setIsConfirmed(true);
     setOpenConfirmModal(false);
     setShowAssignToast(true);
@@ -561,17 +588,19 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                                 padding: "4px 8px",
                                 gap: "6px",
                                 borderRadius: "4px",
-                                backgroundColor: "#FFECCC",
-                                color: "#953D00",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 fontSize: "12px",
                                 fontWeight: 500,
                                 lineHeight: "16.34px",
+                                ...getAvailabilityStyle(premise.availability),
                               }}
                             >
-                              Pending
+                              {premise.availability
+                                ? premise.availability.charAt(0).toUpperCase() +
+                                  premise.availability.slice(1)
+                                : "Pending"}
                             </Box>
                           </TableCell>
                         )}

@@ -1,4 +1,6 @@
-export interface Premises {
+export type AvailabilityStatus = "pending" | "available" | "unavailable";
+
+export interface Premise {
   enforcementNumber: string;
   premisesName: string;
   address: string;
@@ -7,4 +9,5 @@ export interface Premises {
   hriPoi: string;
   origin: string;
   assignedRota?: string;
+  availability?: AvailabilityStatus;
 }
