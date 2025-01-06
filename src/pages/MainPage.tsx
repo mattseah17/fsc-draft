@@ -8,7 +8,7 @@ import Dashboard from "../components/Dashboard/Dashboard";
 const MainPage: React.FC = () => {
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [currentRoute, setCurrentRoute] = useState<"dashboard" | "scheduler">(
-    "dashboard"
+    "scheduler"
   );
 
   const handleRouteChange = (route: "dashboard" | "scheduler") => {
@@ -32,10 +32,10 @@ const MainPage: React.FC = () => {
       >
         <TopNav page={isAssignMode ? "Assign Premises" : undefined} />
         <Box sx={{ marginTop: "48px" }}>
-          {currentRoute === "dashboard" ? (
-            <Dashboard />
-          ) : (
+          {currentRoute === "scheduler" ? (
             <InspectionScheduleContent onAssignModeChange={setIsAssignMode} />
+          ) : (
+            <Dashboard />
           )}
         </Box>
       </Box>

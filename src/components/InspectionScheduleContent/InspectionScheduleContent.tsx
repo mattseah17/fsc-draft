@@ -676,7 +676,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
         {/* Success Toast */}
         <Snackbar
           open={showToast}
-          autoHideDuration={6000}
+          autoHideDuration={5000}
           onClose={() => setShowToast(false)}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
@@ -690,7 +690,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
         {/* Add new toast for assignment */}
         <Snackbar
           open={showAssignToast}
-          autoHideDuration={3000}
+          autoHideDuration={5000}
           onClose={() => setShowAssignToast(false)}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
