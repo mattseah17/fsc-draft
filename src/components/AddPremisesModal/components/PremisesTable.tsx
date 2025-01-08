@@ -27,6 +27,7 @@ interface PremisesTableProps {
   onOriginChange: (premiseId: string, origin: OriginType) => void;
   title: string;
   totalCount?: number;
+  showOriginSelector?: boolean;
 }
 
 export const PremisesTable: React.FC<PremisesTableProps> = ({
@@ -36,6 +37,7 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
   onOriginChange,
   title,
   totalCount,
+  showOriginSelector = true,
 }) => {
   const areAllSelected = (visiblePremises: Premise[]) => {
     if (visiblePremises.length === 0) return false;
@@ -137,10 +139,14 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
                 </TableCell>
                 <TableCell sx={styles.table.cell}>{premise.hriPoi}</TableCell>
                 <TableCell sx={styles.table.cell}>
-                  <OriginSelector
-                    premise={premise}
-                    onOriginChange={onOriginChange}
-                  />
+                  {showOriginSelector ? (
+                    <OriginSelector
+                      premise={premise}
+                      onOriginChange={onOriginChange}
+                    />
+                  ) : (
+                    premise.origin
+                  )}
                 </TableCell>
               </TableRow>
             ))}

@@ -184,6 +184,7 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
           onOriginChange={handleOriginChange}
           title={`${selectedRecommendedCount} Premises Recommended`}
           totalCount={availableRecommendedPremises.length}
+          showOriginSelector={false}
         />
       </Box>
     );
