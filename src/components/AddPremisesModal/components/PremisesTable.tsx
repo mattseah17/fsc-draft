@@ -9,7 +9,7 @@ import {
   Checkbox,
   Typography,
 } from "@mui/material";
-import { Premises } from "../../../types/premises";
+import { Premise } from "../../../types/premises";
 import { styles } from "../styles";
 import { OriginSelector } from "./OriginSelector";
 
@@ -21,9 +21,9 @@ type OriginType =
   | "Adhoc";
 
 interface PremisesTableProps {
-  premises: Premises[];
-  selectedPremises: Premises[];
-  onPremisesSelect: (premises: Premises[]) => void;
+  premises: Premise[];
+  selectedPremises: Premise[];
+  onPremisesSelect: (premises: Premise[]) => void;
   onOriginChange: (premiseId: string, origin: OriginType) => void;
   title: string;
   totalCount?: number;
@@ -37,7 +37,7 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
   title,
   totalCount,
 }) => {
-  const areAllSelected = (visiblePremises: Premises[]) => {
+  const areAllSelected = (visiblePremises: Premise[]) => {
     if (visiblePremises.length === 0) return false;
     return visiblePremises.every((premise) =>
       selectedPremises.some(
@@ -46,7 +46,7 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
     );
   };
 
-  const handleHeaderCheckboxChange = (visiblePremises: Premises[]) => {
+  const handleHeaderCheckboxChange = (visiblePremises: Premise[]) => {
     if (areAllSelected(visiblePremises)) {
       onPremisesSelect(
         selectedPremises.filter(

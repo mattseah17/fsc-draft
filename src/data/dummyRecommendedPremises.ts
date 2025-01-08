@@ -1,6 +1,6 @@
-import { Premises } from "../types/premises";
+import { Premise } from "../types/premises";
 
-export const dummyRecommendedPremises: Premises[] = [
+export const dummyRecommendedPremises: Premise[] = [
   {
     enforcementNumber: "R2024001",
     premisesName: "Jewel Changi Airport",
@@ -8,7 +8,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "10-Jan-2021",
     propensityScore: 91,
     hriPoi: "HRI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024002",
@@ -17,7 +17,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "22-Feb-2021",
     propensityScore: 85,
     hriPoi: "POI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024003",
@@ -26,7 +26,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "14-Mar-2021",
     propensityScore: 93,
     hriPoi: "HRI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024004",
@@ -35,7 +35,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "05-Apr-2021",
     propensityScore: 78,
     hriPoi: "POI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024005",
@@ -44,7 +44,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "19-May-2021",
     propensityScore: 80,
     hriPoi: "HRI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024006",
@@ -53,7 +53,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "15-Jun-2021",
     propensityScore: 88,
     hriPoi: "POI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024007",
@@ -62,7 +62,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "10-Jul-2021",
     propensityScore: 82,
     hriPoi: "HRI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024008",
@@ -71,7 +71,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "30-Aug-2021",
     propensityScore: 76,
     hriPoi: "POI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024009",
@@ -80,7 +80,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "17-Sep-2021",
     propensityScore: 79,
     hriPoi: "HRI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024010",
@@ -89,7 +89,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "08-Oct-2021",
     propensityScore: 84,
     hriPoi: "POI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024011",
@@ -98,7 +98,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "25-Nov-2021",
     propensityScore: 77,
     hriPoi: "HRI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024012",
@@ -107,7 +107,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "18-Dec-2021",
     propensityScore: 92,
     hriPoi: "POI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024013",
@@ -116,7 +116,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "14-Jan-2022",
     propensityScore: 81,
     hriPoi: "HRI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024014",
@@ -125,7 +125,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "05-Feb-2022",
     propensityScore: 75,
     hriPoi: "POI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024015",
@@ -134,7 +134,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "20-Mar-2022",
     propensityScore: 89,
     hriPoi: "HRI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024016",
@@ -143,7 +143,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "12-Apr-2022",
     propensityScore: 86,
     hriPoi: "POI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024017",
@@ -152,7 +152,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "30-May-2022",
     propensityScore: 90,
     hriPoi: "HRI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024018",
@@ -161,7 +161,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "18-Jun-2022",
     propensityScore: 83,
     hriPoi: "POI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024019",
@@ -170,7 +170,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "07-Jul-2022",
     propensityScore: 87,
     hriPoi: "HRI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024020",
@@ -179,7 +179,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "23-Aug-2022",
     propensityScore: 78,
     hriPoi: "POI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024021",
@@ -188,7 +188,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "12-Sep-2022",
     propensityScore: 93,
     hriPoi: "HRI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024022",
@@ -197,7 +197,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "15-Oct-2022",
     propensityScore: 81,
     hriPoi: "POI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024023",
@@ -206,7 +206,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "05-Nov-2022",
     propensityScore: 76,
     hriPoi: "HRI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024024",
@@ -215,7 +215,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "25-Dec-2022",
     propensityScore: 84,
     hriPoi: "POI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024025",
@@ -224,7 +224,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "12-Jan-2023",
     propensityScore: 89,
     hriPoi: "HRI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024026",
@@ -233,7 +233,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "18-Feb-2023",
     propensityScore: 85,
     hriPoi: "POI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024027",
@@ -242,7 +242,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "11-Mar-2023",
     propensityScore: 83,
     hriPoi: "HRI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024028",
@@ -251,7 +251,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "07-Apr-2023",
     propensityScore: 87,
     hriPoi: "POI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024029",
@@ -260,7 +260,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "15-May-2023",
     propensityScore: 92,
     hriPoi: "HRI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024030",
@@ -269,7 +269,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "09-Jun-2023",
     propensityScore: 79,
     hriPoi: "POI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024031",
@@ -278,7 +278,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "20-Jul-2023",
     propensityScore: 82,
     hriPoi: "HRI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024032",
@@ -287,7 +287,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "01-Aug-2023",
     propensityScore: 90,
     hriPoi: "POI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024033",
@@ -296,7 +296,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "19-Sep-2023",
     propensityScore: 75,
     hriPoi: "HRI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024034",
@@ -305,7 +305,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "02-Oct-2023",
     propensityScore: 84,
     hriPoi: "POI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024035",
@@ -314,7 +314,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "17-Nov-2023",
     propensityScore: 89,
     hriPoi: "HRI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024036",
@@ -323,7 +323,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "28-Dec-2023",
     propensityScore: 81,
     hriPoi: "POI",
-    origin: "Cert Audit",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024037",
@@ -332,7 +332,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "11-Jan-2024",
     propensityScore: 88,
     hriPoi: "HRI",
-    origin: "Ops Survey",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024038",
@@ -341,7 +341,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "06-Feb-2024",
     propensityScore: 82,
     hriPoi: "POI",
-    origin: "HRI Exercise",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024039",
@@ -350,7 +350,7 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "20-Mar-2024",
     propensityScore: 91,
     hriPoi: "HRI",
-    origin: "Adhoc",
+    origin: "TOIT",
   },
   {
     enforcementNumber: "R2024040",
@@ -359,6 +359,6 @@ export const dummyRecommendedPremises: Premises[] = [
     lastInspectionDate: "03-Apr-2024",
     propensityScore: 86,
     hriPoi: "POI",
-    origin: "Outside Drill",
+    origin: "TOIT",
   },
 ];

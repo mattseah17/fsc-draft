@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, Box, Typography, Button, Tabs, Tab } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { dummyPremises } from "../../data/dummyPremises";
-import { Premises } from "../../types/premises";
+import { Premise } from "../../types/premises";
 import { dummyRecommendedPremises } from "../../data/dummyRecommendedPremises";
 import { styles } from "./styles";
 import { PremisesTable } from "./components/PremisesTable";
@@ -12,8 +12,8 @@ import { EmptyState } from "./components/EmptyState";
 interface AddPremisesModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (premises: Premises[]) => void;
-  existingPremises: Premises[];
+  onSave: (premises: Premise[]) => void;
+  existingPremises: Premise[];
   totalRequiredPremises: number;
 }
 
@@ -33,8 +33,8 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
 }) => {
   const [tabValue, setTabValue] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPremises, setSelectedPremises] = useState<Premises[]>([]);
-  const [filteredPremises, setFilteredPremises] = useState<Premises[]>([]);
+  const [selectedPremises, setSelectedPremises] = useState<Premise[]>([]);
+  const [filteredPremises, setFilteredPremises] = useState<Premise[]>([]);
 
   const availablePremises = filteredPremises.filter(
     (premise) =>
@@ -101,7 +101,7 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
     }
   }, [open]);
 
-  const handleAutocompleteSelect = (selectedPremise: Premises | null) => {
+  const handleAutocompleteSelect = (selectedPremise: Premise | null) => {
     if (selectedPremise) {
       if (
         !selectedPremises.some(
