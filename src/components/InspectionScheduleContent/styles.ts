@@ -22,13 +22,16 @@ export const styles = {
       fontSize: "12px",
       fontWeight: 600,
       lineHeight: "16.34px",
-      textAlign: "left" as const,
+      textAlign: "left",
       borderBottom: "1px solid #EEEEEE",
       backgroundColor: "white",
-      position: "sticky" as const,
+      position: "sticky",
       top: 0,
       zIndex: 1,
       whiteSpace: "nowrap",
+      "& .MuiTableCell-head": {
+        textAlign: "left",
+      },
     },
     cell: {
       padding: "16px 32px",
