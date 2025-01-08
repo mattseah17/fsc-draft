@@ -1,6 +1,6 @@
 import React from "react";
 import { Select, MenuItem } from "@mui/material";
-import { Premises } from "../../../types/premises";
+import { Premise } from "../../../types/premises";
 import { styles } from "../styles";
 
 type OriginType =
@@ -11,7 +11,7 @@ type OriginType =
   | "Adhoc";
 
 interface OriginSelectorProps {
-  premise: Premises;
+  premise: Premise;
   onOriginChange: (premiseId: string, origin: OriginType) => void;
 }
 

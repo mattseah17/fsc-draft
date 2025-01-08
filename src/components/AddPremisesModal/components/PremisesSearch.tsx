@@ -1,14 +1,14 @@
 import React from "react";
 import { Autocomplete, TextField, Box, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Premises } from "../../../types/premises";
+import { Premise } from "../../../types/premises";
 import { styles } from "../styles";
 
 interface PremisesSearchProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  availablePremises: Premises[];
-  onPremiseSelect: (premise: Premises | null) => void;
+  availablePremises: Premise[];
+  onPremiseSelect: (premise: Premise | null) => void;
 }
 
 export const PremisesSearch: React.FC<PremisesSearchProps> = ({
@@ -70,7 +70,7 @@ export const PremisesSearch: React.FC<PremisesSearchProps> = ({
         </Box>
       )}
       onChange={(event, newValue) =>
-        onPremiseSelect(newValue as Premises | null)
+        onPremiseSelect(newValue as Premise | null)
       }
     />
   );
