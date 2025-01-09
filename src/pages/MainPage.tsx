@@ -4,19 +4,33 @@ import SideNav from "../components/SideNav/SideNav";
 import TopNav from "../components/TopNav/TopNav";
 import InspectionScheduleContent from "../components/InspectionScheduleContent/InspectionScheduleContent";
 import Dashboard from "../components/Dashboard/Dashboard";
+import RotaCommanderView from "../components/RotaCommanderView/RotaCommanderView";
+import { useAuth } from "../contexts/AuthContext";
 
 const MainPage: React.FC = () => {
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [currentRoute, setCurrentRoute] = useState<"dashboard" | "scheduler">(
     "scheduler"
   );
+  const { user } = useAuth();
 
   const handleRouteChange = (route: "dashboard" | "scheduler") => {
     setCurrentRoute(route);
-    // Reset assign mode when switching routes
     if (route === "dashboard") {
       setIsAssignMode(false);
     }
+  };
+
+  const renderContent = () => {
+    if (currentRoute === "dashboard") {
+      return <Dashboard />;
+    }
+
+    if (user?.role === "ENFORCEMENT_OIC") {
+      return <InspectionScheduleContent onAssignModeChange={setIsAssignMode} />;
+    }
+
+    return <RotaCommanderView />;
   };
 
   return (
@@ -31,13 +45,7 @@ const MainPage: React.FC = () => {
         }}
       >
         <TopNav page={isAssignMode ? "Assign Premises" : undefined} />
-        <Box sx={{ marginTop: "48px" }}>
-          {currentRoute === "scheduler" ? (
-            <InspectionScheduleContent onAssignModeChange={setIsAssignMode} />
-          ) : (
-            <Dashboard />
-          )}
-        </Box>
+        <Box sx={{ marginTop: "48px" }}>{renderContent()}</Box>
       </Box>
     </Box>
   );

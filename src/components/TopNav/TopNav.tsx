@@ -10,6 +10,8 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
+import RoleSwitcher from "../RoleSwitcher/RoleSwitcher";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface TopNavProps {
   page?: string;
@@ -18,6 +20,7 @@ interface TopNavProps {
 const TopNav: React.FC<TopNavProps> = ({ page }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { user } = useAuth();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -80,17 +83,15 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           </Typography>
         )}
       </Breadcrumbs>
-      <Avatar
-        alt="User Avatar"
-        src="/path/to/user/avatar.jpg"
-        sx={{
-          width: 32,
-          height: 32,
-          fontSize: 12,
-          cursor: "pointer",
-        }}
-        onClick={handleClick}
-      />
+      <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+        <RoleSwitcher />
+        <Avatar
+          alt={user?.name || "User"}
+          src="/path/to/user/avatar.jpg"
+          sx={{ width: 32, height: 32, fontSize: 12, cursor: "pointer" }}
+          onClick={handleClick}
+        />
+      </Box>
 
       <Menu
         anchorEl={anchorEl}
@@ -122,7 +123,7 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
               bgcolor: "#1976D2",
             }}
           >
-            U
+            {user?.name.charAt(0)}
           </Avatar>
           <Typography
             sx={{
@@ -131,7 +132,7 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
               mb: 0.5,
             }}
           >
-            User Full Name
+            {user?.name}
           </Typography>
           <Typography
             sx={{
@@ -140,7 +141,7 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
               mb: 0.5,
             }}
           >
-            firstname_lastname@scdf.gov.sg
+            {user?.email}
           </Typography>
         </Box>
 
@@ -156,7 +157,9 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <PersonIcon sx={{ fontSize: 20, color: "#454545" }} />
             <Typography sx={{ fontSize: "12px", padding: "4px 20px" }}>
-              Enforcement OIC
+              {user?.role === "ROTA_COMMANDER"
+                ? `${user.role} ${user.rotaNumber}`
+                : user?.role}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

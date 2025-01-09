@@ -1,6 +1,8 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import MainPage from "./pages/MainPage";
+import { AuthProvider } from "./contexts/AuthContext";
+import { PremisesProvider } from "./contexts/PremisesContext";
 
 const theme = createTheme({
   typography: {
@@ -12,7 +14,11 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <MainPage />
+      <AuthProvider>
+        <PremisesProvider>
+          <MainPage />
+        </PremisesProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

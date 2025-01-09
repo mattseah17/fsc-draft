@@ -36,6 +36,8 @@ import DialogActions from "@mui/material/DialogActions";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { AvailabilityStatus } from "../../types/premises";
+import { usePremises } from "../../contexts/PremisesContext";
+
 interface InspectionScheduleContentProps {
   onAssignModeChange: (isAssignMode: boolean) => void;
 }
@@ -83,6 +85,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const { updatePremises } = usePremises();
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -204,12 +207,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   };
 
   const handleConfirm = () => {
-    setPremises(
-      premises.map((premise) => ({
-        ...premise,
-        availability: "pending" as AvailabilityStatus,
-      }))
-    );
+    updatePremises(premises);
     setIsConfirmed(true);
     setOpenConfirmModal(false);
     setShowAssignToast(true);
