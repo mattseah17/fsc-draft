@@ -31,6 +31,9 @@ export const styles = {
     cell: {
       padding: "16px 32px",
       whiteSpace: "nowrap",
+      fontSize: "12px",
+      fontWeight: 600,
+      lineHeight: "16.34px",
     },
     checkboxCell: {
       padding: "16px 0 16px 32px",

@@ -8,6 +8,8 @@ interface PremisesContextType {
     enforcementNumber: string,
     availability: "available" | "unavailable" | "pending"
   ) => void;
+  isConfirmed: boolean;
+  setIsConfirmed: (confirmed: boolean) => void;
 }
 
 const PremisesContext = createContext<PremisesContextType | undefined>(
@@ -17,10 +19,28 @@ const PremisesContext = createContext<PremisesContextType | undefined>(
 export const PremisesProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [premises, setPremises] = useState<Premise[]>([]);
+  const [premises, setPremises] = useState<Premise[]>(() => {
+    // Load premises from localStorage on initial render
+    const savedPremises = localStorage.getItem("premises");
+    return savedPremises ? JSON.parse(savedPremises) : [];
+  });
+
+  const [isConfirmed, setIsConfirmed] = useState(() => {
+    // Load confirmed state from localStorage on initial render
+    const savedConfirmed = localStorage.getItem("isConfirmed");
+    return savedConfirmed ? JSON.parse(savedConfirmed) : false;
+  });
 
   const updatePremises = (newPremises: Premise[]) => {
     setPremises(newPremises);
+    // Save to localStorage whenever premises are updated
+    localStorage.setItem("premises", JSON.stringify(newPremises));
+  };
+
+  // Create a wrapped setIsConfirmed that saves to localStorage
+  const handleSetIsConfirmed = (confirmed: boolean) => {
+    setIsConfirmed(confirmed);
+    localStorage.setItem("isConfirmed", JSON.stringify(confirmed));
   };
 
   const updatePremiseAvailability = (
@@ -38,7 +58,13 @@ export const PremisesProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <PremisesContext.Provider
-      value={{ premises, updatePremises, updatePremiseAvailability }}
+      value={{
+        premises,
+        updatePremises,
+        updatePremiseAvailability,
+        isConfirmed,
+        setIsConfirmed: handleSetIsConfirmed,
+      }}
     >
       {children}
     </PremisesContext.Provider>

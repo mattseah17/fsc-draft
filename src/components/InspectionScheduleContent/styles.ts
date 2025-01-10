@@ -34,8 +34,11 @@ export const styles = {
       },
     },
     cell: {
-      padding: "16px 32px",
+      padding: "8px 32px",
       whiteSpace: "nowrap",
+      fontSize: "12px",
+      fontWeight: 600,
+      lineHeight: "16.34px",
     },
     checkboxCell: {
       padding: "16px 0 16px 32px",
@@ -79,7 +82,7 @@ export const styles = {
     border: "1px solid #e0e0e0",
     borderRadius: "16px",
     width: "100%",
-    height: props.isAssignMode ? "550px" : "465px",
+    height: props.isAssignMode ? "550px" : "454px",
     display: "flex",
     flexDirection: "column" as const,
   }),

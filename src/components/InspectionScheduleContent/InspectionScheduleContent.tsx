@@ -63,19 +63,14 @@ const getAvailabilityStyle = (status?: AvailabilityStatus) => {
   }
 };
 
-const rotaCellStyles = {
-  width: "110px",
-  height: "26px",
-  padding: "10px 20px",
-};
-
 const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   onAssignModeChange,
 }) => {
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const [premises, setPremises] = useState<Premise[]>([]);
+  const { premises, updatePremises, isConfirmed, setIsConfirmed } =
+    usePremises();
   const [showToast, setShowToast] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [newlyAddedCount, setNewlyAddedCount] = useState(0);
@@ -84,8 +79,6 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [selectedPremises, setSelectedPremises] = useState<string[]>([]);
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
-  const { updatePremises } = usePremises();
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -95,30 +88,23 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const handleCloseModal = () => setOpenModal(false);
 
   const handleSavePremises = (newPremises: Premise[]) => {
-    setPremises((prevPremises) => {
-      const combinedPremises = [...prevPremises];
-      let addedCount = 0;
+    updatePremises([
+      ...premises,
+      ...newPremises.filter(
+        (newPremise) =>
+          !premises.some(
+            (existing) =>
+              existing.enforcementNumber === newPremise.enforcementNumber
+          )
+      ),
+    ]);
 
-      newPremises.forEach((newPremise) => {
-        const exists = combinedPremises.some(
-          (existing) =>
-            existing.enforcementNumber === newPremise.enforcementNumber
-        );
-
-        if (!exists) {
-          combinedPremises.push(newPremise);
-          addedCount++;
-        }
-      });
-
-      setNewlyAddedCount(addedCount);
-      setShowToast(true);
-      return combinedPremises;
-    });
+    setNewlyAddedCount(newPremises.length);
+    setShowToast(true);
   };
 
   const handleDeletePremise = (enforcementNumber: string) => {
-    setPremises(
+    updatePremises(
       premises.filter((p) => p.enforcementNumber !== enforcementNumber)
     );
   };
@@ -140,18 +126,18 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const getRotaColor = (rotaNumber: number) => {
     switch (rotaNumber) {
       case 1:
-        return "#1976d2"; // Blue
+        return "#1976d2";
       case 2:
-        return "#7b1fa2"; // Purple
+        return "#7b1fa2";
       case 3:
-        return "#ed6c02"; // Orange
+        return "#ed6c02";
       default:
         return "#grey";
     }
   };
 
   const handleRotaAssignment = (enforcementNumber: string, rota: string) => {
-    setPremises(
+    updatePremises(
       premises.map((premise) =>
         premise.enforcementNumber === enforcementNumber
           ? { ...premise, assignedRota: rota }
@@ -173,7 +159,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   };
 
   const handleBulkAssign = (rota: string) => {
-    setPremises(
+    updatePremises(
       premises.map((premise) =>
         selectedPremises.includes(premise.enforcementNumber)
           ? { ...premise, assignedRota: rota }
@@ -306,7 +292,6 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
             display: "flex",
             alignItems: "center",
             gap: 1,
-            ...rotaCellStyles,
           }}
         >
           <Avatar
@@ -325,6 +310,22 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     }
 
     return null;
+  };
+
+  const getSortedPremises = () => {
+    if (!isConfirmed) return premises;
+
+    const availabilityOrder = {
+      unavailable: 0,
+      pending: 1,
+      available: 2,
+    };
+
+    return [...premises].sort((a, b) => {
+      const aStatus = a.availability || "pending";
+      const bStatus = b.availability || "pending";
+      return availabilityOrder[aStatus] - availabilityOrder[bStatus];
+    });
   };
 
   return (
@@ -597,7 +598,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {premises.map((premise) => (
+                    {getSortedPremises().map((premise) => (
                       <TableRow key={premise.enforcementNumber}>
                         {isAssignMode && !isConfirmed ? (
                           <TableCell
@@ -616,7 +617,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                         ) : null}
                         {(isAssignMode ||
                           premises.some((p) => p.assignedRota)) && (
-                          <TableCell>{renderRotaCell(premise)}</TableCell>
+                          <TableCell sx={styles.table.cell}>{renderRotaCell(premise)}</TableCell>
                         )}
                         {!isAssignMode && isConfirmed && (
                           <TableCell>
@@ -624,7 +625,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                               sx={{
                                 width: "64px",
                                 height: "24px",
-                                padding: "4px 8px",
+                                padding: "2px 6px",
                                 gap: "6px",
                                 borderRadius: "4px",
                                 display: "flex",

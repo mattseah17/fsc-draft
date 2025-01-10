@@ -54,6 +54,7 @@ const RotaCommanderView: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showAvailabilityToast, setShowAvailabilityToast] = useState(false);
   const { user } = useAuth();
   const { premises, updatePremiseAvailability, updatePremises } = usePremises();
 
@@ -74,6 +75,7 @@ const RotaCommanderView: React.FC = () => {
     availability: "available" | "unavailable" | "pending"
   ) => {
     updatePremiseAvailability(enforcementNumber, availability);
+    setShowAvailabilityToast(true);
   };
 
   const areAllPremisesAvailabilitySet = () => {
@@ -174,7 +176,9 @@ const RotaCommanderView: React.FC = () => {
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button
                 variant="contained"
-                disabled={!areAllPremisesAvailabilitySet()}
+                disabled={
+                  !areAllPremisesAvailabilitySet() || rotaPremises.length === 0
+                }
                 onClick={handleConfirmNotify}
               >
                 Confirm & Notify
@@ -444,6 +448,21 @@ const RotaCommanderView: React.FC = () => {
           </DialogActions>
         </Dialog>
       </Box>
+
+      <Snackbar
+        open={showAvailabilityToast}
+        autoHideDuration={5000}
+        onClose={() => setShowAvailabilityToast(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setShowAvailabilityToast(false)}
+          severity="success"
+          sx={styles.successAlert}
+        >
+          Premises availability updated
+        </Alert>
+      </Snackbar>
 
       <Snackbar
         open={showToast}
