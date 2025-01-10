@@ -69,8 +69,12 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [isAssignMode, setIsAssignMode] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const { premises, updatePremises, isConfirmed, setIsConfirmed } =
-    usePremises();
+  const {
+    premises,
+    updatePremises,
+    isPendingRotaVerification,
+    setPendingRotaVerification,
+  } = usePremises();
   const [showToast, setShowToast] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [newlyAddedCount, setNewlyAddedCount] = useState(0);
@@ -194,7 +198,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
 
   const handleConfirm = () => {
     updatePremises(premises);
-    setIsConfirmed(true);
+    setPendingRotaVerification(true);
     setOpenConfirmModal(false);
     setShowAssignToast(true);
     setAssignMessage("Notified ROTA Commander to verify premises availability");
@@ -203,7 +207,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   };
 
   const renderRotaCell = (premise: Premise) => {
-    if (isAssignMode && !isConfirmed) {
+    if (isAssignMode && !isPendingRotaVerification) {
       return (
         <Select
           value={premise.assignedRota || ""}
@@ -313,7 +317,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   };
 
   const getSortedPremises = () => {
-    if (!isConfirmed) return premises;
+    if (!isPendingRotaVerification) return premises;
 
     const availabilityOrder = {
       unavailable: 0,
@@ -516,7 +520,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                 </Menu>
                 <Button
                   variant="contained"
-                  disabled={!isConfirmed}
+                  disabled={!isPendingRotaVerification}
                   sx={{
                     fontSize: "14px",
                     fontWeight: 600,
@@ -551,7 +555,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      {isAssignMode && !isConfirmed ? (
+                      {isAssignMode && !isPendingRotaVerification ? (
                         <TableCell
                           padding="checkbox"
                           sx={styles.table.checkboxCell}
@@ -563,7 +567,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                         premises.some((p) => p.assignedRota)) && (
                         <TableCell sx={styles.table.headerCell}>ROTA</TableCell>
                       )}
-                      {!isAssignMode && isConfirmed && (
+                      {isPendingRotaVerification && (
                         <TableCell
                           sx={{
                             ...styles.table.headerCell,
@@ -600,7 +604,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   <TableBody>
                     {getSortedPremises().map((premise) => (
                       <TableRow key={premise.enforcementNumber}>
-                        {isAssignMode && !isConfirmed ? (
+                        {isAssignMode && !isPendingRotaVerification ? (
                           <TableCell
                             padding="checkbox"
                             sx={styles.table.checkboxCell}
@@ -617,9 +621,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                         ) : null}
                         {(isAssignMode ||
                           premises.some((p) => p.assignedRota)) && (
-                          <TableCell sx={styles.table.cell}>{renderRotaCell(premise)}</TableCell>
+                          <TableCell sx={styles.table.cell}>
+                            {renderRotaCell(premise)}
+                          </TableCell>
                         )}
-                        {!isAssignMode && isConfirmed && (
+                        {isPendingRotaVerification && (
                           <TableCell>
                             <Box
                               sx={{
