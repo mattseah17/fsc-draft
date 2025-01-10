@@ -1,6 +1,20 @@
-// Create a type for dynamic styles
+// Types
 type TableContainerStyleProps = {
   isAssignMode?: boolean;
+};
+
+// Helper functions
+const getRotaColor = (rotaNumber: number) => {
+  switch (rotaNumber) {
+    case 1:
+      return "#1976d2";
+    case 2:
+      return "#7b1fa2";
+    case 3:
+      return "#ed6c02";
+    default:
+      return "#grey";
+  }
 };
 
 export const styles = {
@@ -101,5 +115,81 @@ export const styles = {
     border: "1px solid #00653E",
     borderRadius: "16px",
     "& .MuiAlert-icon": { color: "#00653E" },
+  },
+  rotaAvatar: (rotaNumber: number) => ({
+    width: 20,
+    height: 20,
+    fontSize: 12,
+    bgcolor: getRotaColor(rotaNumber),
+  }),
+  rotaSelect: {
+    minWidth: 120,
+    height: "26px",
+    fontSize: "12px",
+    "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+    "&:hover .MuiOutlinedInput-notchedOutline": { border: "none" },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": { border: "none" },
+  },
+  tooltip: {
+    cursor: "pointer",
+    "& .MuiTooltip-tooltip": {
+      width: "300px",
+      height: "100px",
+      padding: "12px 16px",
+      gap: "10px",
+      borderRadius: "8px",
+      backgroundColor: "#454545",
+      opacity: 1,
+    },
+  },
+  tooltipText: {
+    fontFamily: "Noto Sans",
+    fontSize: "14px",
+    fontWeight: 400,
+    lineHeight: "19.07px",
+    textAlign: "left",
+    textUnderlinePosition: "from-font",
+    textDecorationSkipInk: "none",
+  },
+  infoIcon: {
+    fontSize: 16,
+    color: "text.secondary",
+    "&:hover": {
+      color: "primary.main",
+    },
+  },
+  confirmDialog: {
+    "& .MuiDialog-paper": {
+      width: "440px",
+      height: "196px",
+      borderRadius: "16px",
+      gap: "10px",
+    },
+  },
+  confirmDialogContent: {
+    pb: 3,
+    overflowY: "hidden",
+  },
+  confirmDialogText: {
+    fontSize: "15px",
+    lineHeight: "21.79px",
+    fontWeight: 400,
+  },
+  confirmDialogActions: {
+    px: 3,
+    pb: 3,
+  },
+  availabilityBox: (status: string) => ({
+    width: "64px",
+    height: "24px",
+    backgroundColor: status === "available" ? "#CEF8E0" : "#FFE0E0",
+  }),
+  editMenu: {
+    "& .MuiPaper-root": {
+      border: "1px solid #E0E0E0",
+    },
+  },
+  menuItem: {
+    gap: 1,
   },
 };

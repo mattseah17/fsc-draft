@@ -35,33 +35,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
-import { AvailabilityStatus } from "../../types/premises";
 import { usePremises } from "../../contexts/PremisesContext";
 
 interface InspectionScheduleContentProps {
   onAssignModeChange: (isAssignMode: boolean) => void;
 }
-
-const getAvailabilityStyle = (status?: AvailabilityStatus) => {
-  switch (status) {
-    case "available":
-      return {
-        backgroundColor: "#CEF8E0",
-        color: "#007A4D",
-      };
-    case "unavailable":
-      return {
-        backgroundColor: "#FFEBE7",
-        color: "#D31510",
-      };
-    case "pending":
-    default:
-      return {
-        backgroundColor: "#FFECCC",
-        color: "#953D00",
-      };
-  }
-};
 
 const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   onAssignModeChange,
@@ -125,19 +103,6 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     setIsAssignMode(true);
     onAssignModeChange(true);
     handleEditMenuClose();
-  };
-
-  const getRotaColor = (rotaNumber: number) => {
-    switch (rotaNumber) {
-      case 1:
-        return "#1976d2";
-      case 2:
-        return "#7b1fa2";
-      case 3:
-        return "#ed6c02";
-      default:
-        return "#grey";
-    }
   };
 
   const handleRotaAssignment = (enforcementNumber: string, rota: string) => {
@@ -212,16 +177,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
         <Select
           value={premise.assignedRota || ""}
           displayEmpty
-          sx={{
-            minWidth: 120,
-            height: "26px",
-            fontSize: "12px",
-            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-            "&:hover .MuiOutlinedInput-notchedOutline": { border: "none" },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              border: "none",
-            },
-          }}
+          sx={styles.rotaSelect}
           onChange={(event) =>
             handleRotaAssignment(premise.enforcementNumber, event.target.value)
           }
@@ -245,14 +201,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   gap: 1,
                 }}
               >
-                <Avatar
-                  sx={{
-                    width: 20,
-                    height: 20,
-                    fontSize: 12,
-                    bgcolor: getRotaColor(rotaNumber),
-                  }}
-                >
+                <Avatar sx={styles.rotaAvatar(rotaNumber)}>
                   {`R${rotaNumber}`}
                 </Avatar>
                 {selected}
@@ -271,16 +220,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                 gap: 1,
               }}
             >
-              <Avatar
-                sx={{
-                  width: 20,
-                  height: 20,
-                  fontSize: 12,
-                  bgcolor: getRotaColor(number),
-                }}
-              >
-                {`R${number}`}
-              </Avatar>
+              <Avatar sx={styles.rotaAvatar(number)}>{`R${number}`}</Avatar>
               {`ROTA ${number}`}
             </MenuItem>
           ))}
@@ -298,16 +238,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
             gap: 1,
           }}
         >
-          <Avatar
-            sx={{
-              width: 20,
-              height: 20,
-              fontSize: 12,
-              bgcolor: getRotaColor(rotaNumber),
-            }}
-          >
-            {`R${rotaNumber}`}
-          </Avatar>
+          <Avatar sx={styles.rotaAvatar(rotaNumber)}>{`R${rotaNumber}`}</Avatar>
           {premise.assignedRota}
         </Box>
       );
@@ -403,46 +334,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
               </Typography>
               {!isAssignMode && (
                 <Tooltip
-                  title={
-                    <Typography
-                      sx={{
-                        fontFamily: "Noto Sans",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "19.07px",
-                        textAlign: "left",
-                        textUnderlinePosition: "from-font",
-                        textDecorationSkipInk: "none",
-                      }}
-                    >
-                      Premises data and propensity scores refresh automatically
-                      every month. It is recommended to start planning from the
-                      21th of each month.
-                    </Typography>
-                  }
+                  title={<Typography sx={styles.tooltipText}>...</Typography>}
                   placement="right"
-                  sx={{
-                    cursor: "pointer",
-                    "& .MuiTooltip-tooltip": {
-                      width: "300px",
-                      height: "100px",
-                      padding: "12px 16px",
-                      gap: "10px",
-                      borderRadius: "8px",
-                      backgroundColor: "#454545",
-                      opacity: 1,
-                    },
-                  }}
+                  sx={styles.tooltip}
                 >
-                  <InfoOutlinedIcon
-                    sx={{
-                      fontSize: 16,
-                      color: "text.secondary",
-                      "&:hover": {
-                        color: "primary.main",
-                      },
-                    }}
-                  />
+                  <InfoOutlinedIcon sx={styles.infoIcon} />
                 </Tooltip>
               )}
             </Box>
@@ -497,23 +393,19 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   open={Boolean(anchorEl)}
                   onClose={handleEditMenuClose}
                   elevation={0}
-                  sx={{
-                    "& .MuiPaper-root": {
-                      border: "1px solid #E0E0E0",
-                    },
-                  }}
+                  sx={styles.editMenu}
                 >
                   <MenuItem
                     onClick={() => {
                       handleOpenModal();
                       handleEditMenuClose();
                     }}
-                    sx={{ gap: 1 }}
+                    sx={styles.menuItem}
                   >
                     <AddIcon fontSize="small" />
                     Add Premises
                   </MenuItem>
-                  <MenuItem onClick={handleAssignPremises} sx={{ gap: 1 }}>
+                  <MenuItem onClick={handleAssignPremises} sx={styles.menuItem}>
                     <PersonAddAltIcon fontSize="small" />
                     Assign Premises
                   </MenuItem>
@@ -629,18 +521,9 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                           <TableCell>
                             <Box
                               sx={{
-                                width: "64px",
-                                height: "24px",
-                                padding: "2px 6px",
-                                gap: "6px",
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "12px",
-                                fontWeight: 500,
-                                lineHeight: "16.34px",
-                                ...getAvailabilityStyle(premise.availability),
+                                ...styles.availabilityBox(
+                                  premise.availability || "pending"
+                                ),
                               }}
                             >
                               {premise.availability
@@ -711,34 +594,16 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
         <Dialog
           open={openConfirmModal}
           onClose={handleConfirmModalClose}
-          sx={{
-            "& .MuiDialog-paper": {
-              width: "440px",
-              height: "196px",
-              borderRadius: "16px",
-              gap: "10px",
-            },
-          }}
+          sx={styles.confirmDialog}
         >
           <DialogTitle sx={{ pb: 1 }}>Confirm & Notify?</DialogTitle>
-          <DialogContent
-            sx={{
-              pb: 3,
-              overflowY: "hidden",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "15px",
-                lineHeight: "21.79px",
-                fontWeight: 400,
-              }}
-            >
+          <DialogContent sx={styles.confirmDialogContent}>
+            <Typography sx={styles.confirmDialogText}>
               Are you sure you want to notify the respective ROTA commander to
               verify the premises availability?
             </Typography>
           </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 3 }}>
+          <DialogActions sx={styles.confirmDialogActions}>
             <Button onClick={handleConfirmModalClose} variant="outlined">
               Cancel
             </Button>
