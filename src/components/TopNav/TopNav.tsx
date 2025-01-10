@@ -35,16 +35,22 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
       sx={{
         position: "fixed",
         top: 0,
-        width: "1301px",
+        left: "128px",
+        right: 0,
         height: "32px",
         minHeight: "32px",
         maxHeight: "32px",
         borderBottom: "1px solid #EEEEEE",
-        padding: "16px 32px",
+        padding: {
+          xs: "16px",
+          sm: "16px 32px",
+        },
         backgroundColor: "#FFFFFF",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        zIndex: 1100,
+        overflow: "visible",
       }}
     >
       <Breadcrumbs
@@ -53,6 +59,12 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           "& .MuiBreadcrumbs-separator": {
             fontSize: "12px",
             color: "#757575",
+          },
+          "& .MuiBreadcrumbs-ol": {
+            flexWrap: "nowrap",
+          },
+          "& .MuiBreadcrumbs-li": {
+            minWidth: 0,
           },
         }}
       >
@@ -83,7 +95,15 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           </Typography>
         )}
       </Breadcrumbs>
-      <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: { xs: 1, sm: 1 },
+          alignItems: "center",
+          ml: "auto",
+          minWidth: "fit-content",
+        }}
+      >
         <RoleSwitcher />
         <Avatar
           alt={user?.name || "User"}
