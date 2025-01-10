@@ -180,9 +180,34 @@ export const styles = {
     pb: 3,
   },
   availabilityBox: (status: string) => ({
-    width: "64px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width:
+      status === "pending" ? "48px" : status === "available" ? "53px" : "68px",
     height: "24px",
-    backgroundColor: status === "available" ? "#CEF8E0" : "#FFE0E0",
+    padding: "4px 8px",
+    gap: "6px",
+    borderRadius: "4px",
+    backgroundColor:
+      status === "pending"
+        ? "#FFECCC"
+        : status === "available"
+        ? "#CEF8E0"
+        : "#FFEBE7",
+    color:
+      status === "pending"
+        ? "#953D00"
+        : status === "available"
+        ? "#007A4D"
+        : "#D31510",
+    fontFamily: "Noto Sans",
+    fontSize: "12px",
+    fontWeight: 500,
+    lineHeight: "16.34px",
+    textAlign: "center",
+    textUnderlinePosition: "from-font",
+    textDecorationSkipInk: "none",
   }),
   editMenu: {
     "& .MuiPaper-root": {

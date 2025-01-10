@@ -334,7 +334,13 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
               </Typography>
               {!isAssignMode && (
                 <Tooltip
-                  title={<Typography sx={styles.tooltipText}>...</Typography>}
+                  title={
+                    <Typography sx={styles.tooltipText}>
+                      Premises data and propensity scores refresh automatically
+                      every month. It is recommended to start planning from the
+                      21th of each month.
+                    </Typography>
+                  }
                   placement="right"
                   sx={styles.tooltip}
                 >
@@ -417,6 +423,10 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                     fontSize: "14px",
                     fontWeight: 600,
                     lineHeight: "21.79px",
+                    boxShadow: "none",
+                    "&:hover": {
+                      boxShadow: "none",
+                    },
                   }}
                 >
                   Verify Schedule
