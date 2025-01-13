@@ -76,7 +76,7 @@ export const styles = {
       padding: "8px",
       fontFamily: "Noto Sans, sans-serif",
       fontSize: "12px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "16.34px",
       textAlign: "left" as const,
       textUnderlinePosition: "from-font" as const,

@@ -1,9 +1,7 @@
-// Types
 type TableContainerStyleProps = {
   isAssignMode?: boolean;
 };
 
-// Helper functions
 const getRotaColor = (rotaNumber: number) => {
   switch (rotaNumber) {
     case 1:
@@ -51,7 +49,7 @@ export const styles = {
       padding: "8px 32px",
       whiteSpace: "nowrap",
       fontSize: "12px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "16.34px",
     },
     checkboxCell: {
@@ -140,6 +138,9 @@ export const styles = {
       borderRadius: "8px",
       backgroundColor: "#454545",
       opacity: 1,
+      "& .MuiTypography-root": {
+        fontFamily: "Noto Sans, sans-serif"
+      }
     },
   },
   tooltipText: {

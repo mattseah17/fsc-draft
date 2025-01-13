@@ -171,6 +171,14 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     onAssignModeChange(false);
   };
 
+  const handleHeaderCheckboxChange = () => {
+    if (selectedPremises.length > 0) {
+      setSelectedPremises([]);
+    } else {
+      setSelectedPremises(premises.map(p => p.enforcementNumber));
+    }
+  };
+
   const renderRotaCell = (premise: Premise) => {
     if (isAssignMode && !isPendingRotaVerification) {
       return (
@@ -328,14 +336,19 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   lineHeight: "21.79px",
                 }}
               >
-                {isAssignMode
+                {isAssignMode && selectedPremises.length > 0
+                  ? `${selectedPremises.length} Premises Selected`
+                  : isAssignMode
                   ? "Assign Premises to ROTA"
                   : "Dec 2024 Inspection Schedule"}
               </Typography>
               {!isAssignMode && (
                 <Tooltip
                   title={
-                    <Typography sx={styles.tooltipText}>
+                    <Typography sx={{
+                      ...styles.tooltipText,
+                      
+                    }}>
                       Premises data and propensity scores refresh automatically
                       every month. It is recommended to start planning from the
                       21th of each month.
@@ -458,11 +471,17 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   <TableHead>
                     <TableRow>
                       {isAssignMode && !isPendingRotaVerification ? (
-                        <TableCell
-                          padding="checkbox"
-                          sx={styles.table.checkboxCell}
-                        >
-                          <Checkbox />
+                        <TableCell padding="checkbox" sx={styles.table.checkboxCell}>
+                          <Checkbox
+                            indeterminate={selectedPremises.length > 0}
+                            checked={selectedPremises.length === premises.length}
+                            onChange={handleHeaderCheckboxChange}
+                            sx={{
+                              '&.Mui-indeterminate': {
+                                color: 'white',
+                              }
+                            }}
+                          />
                         </TableCell>
                       ) : null}
                       {(isAssignMode ||
@@ -606,7 +625,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           onClose={handleConfirmModalClose}
           sx={styles.confirmDialog}
         >
-          <DialogTitle sx={{ pb: 1 }}>Confirm & Notify?</DialogTitle>
+          <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>Confirm & Notify?</DialogTitle>
           <DialogContent sx={styles.confirmDialogContent}>
             <Typography sx={styles.confirmDialogText}>
               Are you sure you want to notify the respective ROTA commander to

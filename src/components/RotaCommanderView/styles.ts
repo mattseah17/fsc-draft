@@ -32,7 +32,7 @@ export const styles = {
       padding: "16px 32px",
       whiteSpace: "nowrap",
       fontSize: "12px",
-      fontWeight: 600,
+      fontWeight: 400,
       lineHeight: "16.34px",
     },
     checkboxCell: {
