@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Tabs, Tab, Typography } from "@mui/material";
 import { dummyPremises } from "../../data/dummyPremises";
-import { Premise } from "../../types/premises";
+import { Premise, OriginType } from "../../types/premises";
 import { dummyRecommendedPremises } from "../../data/dummyRecommendedPremises";
 import { styles } from "./styles";
-import { PremisesTable } from "./components/PremisesTable";
-import { PremisesSearch } from "./components/PremisesSearch";
+import { PremisesTable } from "./components/PremisesTable/PremisesTable";
+import { PremisesSearch } from "./components/PremisesSearch/PremisesSearch";
 import { EmptyState } from "../../common/components/EmptyState/EmptyState";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 
@@ -16,13 +16,6 @@ interface AddPremisesModalProps {
   existingPremises: Premise[];
   totalRequiredPremises: number;
 }
-
-type OriginType =
-  | "Ops Survey"
-  | "Cert Audit"
-  | "HRI Exercise"
-  | "Outside Drill"
-  | "Adhoc";
 
 const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
   open,
@@ -68,11 +61,11 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
     setFilteredPremises(filtered);
   }, [searchQuery]);
 
-  const handleOriginChange = (premiseId: string, newOrigin: OriginType) => {
+  const handleOriginChange = (premiseId: string, newOrigins: OriginType[]) => {
     setSelectedPremises((prevPremises) =>
       prevPremises.map((premise) =>
         premise.enforcementNumber === premiseId
-          ? { ...premise, origin: newOrigin }
+          ? { ...premise, origin: newOrigins }
           : premise
       )
     );

@@ -9,22 +9,15 @@ import {
   Checkbox,
   Typography,
 } from "@mui/material";
-import { Premise } from "../../../types/premises";
-import { styles } from "../styles";
-import { OriginSelector } from "./OriginSelector";
-
-type OriginType =
-  | "Ops Survey"
-  | "Cert Audit"
-  | "HRI Exercise"
-  | "Outside Drill"
-  | "Adhoc";
+import { Premise, OriginType } from "../../../../types/premises";
+import { styles } from "./PremisesTable.styles";
+import { OriginSelector } from "../OriginSelector/OriginSelector";
 
 interface PremisesTableProps {
   premises: Premise[];
   selectedPremises: Premise[];
   onPremisesSelect: (premises: Premise[]) => void;
-  onOriginChange: (premiseId: string, origin: OriginType) => void;
+  onOriginChange: (premiseId: string, origins: OriginType[]) => void;
   title: string;
   totalCount?: number;
   showOriginSelector?: boolean;

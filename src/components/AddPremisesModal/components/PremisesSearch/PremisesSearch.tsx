@@ -1,8 +1,8 @@
 import React from "react";
 import { Autocomplete, TextField, Box, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Premise } from "../../../types/premises";
-import { styles } from "../styles";
+import { Premise } from "../../../../types/premises";
+import { styles } from "./PremisesSearch.styles";
 
 interface PremisesSearchProps {
   searchQuery: string;
