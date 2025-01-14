@@ -101,7 +101,10 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
           (p) => p.enforcementNumber === selectedPremise.enforcementNumber
         )
       ) {
-        setSelectedPremises([...selectedPremises, selectedPremise]);
+        setSelectedPremises([
+          ...selectedPremises,
+          { ...selectedPremise, origin: ["Ops Survey"] },
+        ]);
       }
       setSearchQuery("");
       setFilteredPremises([]);

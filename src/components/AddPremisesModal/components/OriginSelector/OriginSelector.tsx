@@ -1,8 +1,9 @@
 import React from "react";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, Checkbox } from "@mui/material";
 import { Premise, OriginType } from "../../../../types/premises";
 import { styles } from "./OriginSelector.styles";
-import Checkbox from "@mui/material/Checkbox";
+import { ORIGIN_TYPES } from "../../../../constants/origins";
+import { normalizeOrigins, createOriginHandler } from "./utils/originHelpers";
 
 interface OriginSelectorProps {
   premise: Premise;
@@ -13,38 +14,24 @@ export const OriginSelector: React.FC<OriginSelectorProps> = ({
   premise,
   onOriginChange,
 }) => {
-  const handleChange = (event: {
-    target: { value: string | OriginType[] };
-  }) => {
-    const {
-      target: { value },
-    } = event;
-    onOriginChange(
-      premise.enforcementNumber,
-      typeof value === "string"
-        ? [value as OriginType]
-        : (value as OriginType[])
-    );
-  };
+  const currentOrigins = normalizeOrigins(premise.origin);
+  const handleChange = createOriginHandler(
+    onOriginChange,
+    premise.enforcementNumber
+  );
 
   return (
     <Select
       multiple
-      value={premise.origin || []}
+      value={currentOrigins}
       onChange={handleChange}
       sx={styles.select}
       size="small"
-      renderValue={(selected) => selected.join(", ")}
+      renderValue={(selected) => (selected as string[]).join(", ")}
     >
-      {[
-        "Ops Survey",
-        "Cert Audit",
-        "HRI Exercise",
-        "Outside Drill",
-        "Adhoc",
-      ].map((option) => (
+      {ORIGIN_TYPES.map((option) => (
         <MenuItem key={option} value={option} sx={styles.menuItem}>
-          <Checkbox checked={premise.origin?.includes(option as OriginType)} />
+          <Checkbox checked={currentOrigins.includes(option)} />
           {option}
         </MenuItem>
       ))}
