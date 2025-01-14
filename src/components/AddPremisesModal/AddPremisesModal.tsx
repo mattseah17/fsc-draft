@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, Box, Typography, Button, Tabs, Tab } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Box, Button, Tabs, Tab, Typography } from "@mui/material";
 import { dummyPremises } from "../../data/dummyPremises";
 import { Premise } from "../../types/premises";
 import { dummyRecommendedPremises } from "../../data/dummyRecommendedPremises";
@@ -8,6 +7,7 @@ import { styles } from "./styles";
 import { PremisesTable } from "./components/PremisesTable";
 import { PremisesSearch } from "./components/PremisesSearch";
 import { EmptyState } from "./components/EmptyState";
+import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 
 interface AddPremisesModalProps {
   open: boolean;
@@ -46,7 +46,7 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
       )
   );
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
     setSearchQuery("");
     setFilteredPremises([]);
@@ -191,29 +191,15 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
   };
 
   return (
-    <Dialog
+    <BaseModal
       open={open}
       onClose={handleClose}
-      maxWidth={false}
-      PaperProps={{ sx: styles.dialog }}
-    >
-      <Box sx={styles.container}>
+      title={
         <Box sx={styles.header}>
-          <Typography variant="h6">Add Premises</Typography>
-          <Button onClick={onClose}>
-            <ClearIcon sx={{ color: "black" }} />
-          </Button>
+          <Typography>Add Premises</Typography>
         </Box>
-
-        <Box sx={styles.tabContainer}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Search" />
-            <Tab label="Recommend" />
-          </Tabs>
-        </Box>
-
-        {tabValue === 0 ? renderSearchTab() : renderRecommendTab()}
-
+      }
+      footer={
         <Box sx={styles.footer}>
           <Button variant="text" onClick={onClose} sx={{ color: "#757575" }}>
             Cancel
@@ -226,8 +212,27 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
             Save
           </Button>
         </Box>
+      }
+      modalProps={{
+        PaperProps: {
+          sx: {
+            width: "1254px",
+            padding: "20px",
+            borderRadius: "16px",
+          },
+        },
+      }}
+    >
+      <Box sx={styles.container}>
+        <Box sx={styles.tabContainer}>
+          <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tab label="Search" />
+            <Tab label="Recommend" />
+          </Tabs>
+        </Box>
+        {tabValue === 0 ? renderSearchTab() : renderRecommendTab()}
       </Box>
-    </Dialog>
+    </BaseModal>
   );
 };
 

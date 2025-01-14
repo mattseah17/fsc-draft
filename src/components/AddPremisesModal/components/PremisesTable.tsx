@@ -77,8 +77,16 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
           {title}
         </Typography>
       </Box>
-      <Box sx={styles.table.headerAndContent}>
-        <Table>
+
+      <Box
+        sx={{
+          ...styles.table.headerAndContent,
+          height: "280px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell sx={styles.table.headerCell}>
@@ -102,7 +110,8 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
               <TableCell sx={styles.table.headerCell}>Origin</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+
+          <TableBody sx={{ overflow: "auto" }}>
             {premises.map((premise) => (
               <TableRow key={premise.enforcementNumber}>
                 <TableCell sx={styles.table.cell}>
@@ -153,6 +162,7 @@ export const PremisesTable: React.FC<PremisesTableProps> = ({
           </TableBody>
         </Table>
       </Box>
+
       <Box sx={styles.table.footer}>
         <Typography sx={{ fontSize: "12px", color: "#757575" }}>
           {`1 - ${premises.length} of ${totalCount || premises.length}`}

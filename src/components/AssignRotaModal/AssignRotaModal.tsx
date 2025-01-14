@@ -1,16 +1,13 @@
 import React from "react";
 import {
-  Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
   Select,
   MenuItem,
   Typography,
   Box,
   Avatar,
 } from "@mui/material";
+import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 
 interface AssignRotaModalProps {
   open: boolean;
@@ -41,24 +38,23 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
   const handleSave = () => {
     if (selectedRota) {
       onSave(selectedRota);
-      setSelectedRota(""); 
+      setSelectedRota("");
     }
   };
 
   const handleClose = () => {
-    setSelectedRota(""); 
+    setSelectedRota("");
     onClose();
   };
 
   return (
-    <Dialog
+    <BaseModal
       open={open}
       onClose={handleClose}
-      PaperProps={{
-        sx: { borderRadius: "16px", width: "629px", gap: "10px" },
-      }}
+      title="Assign ROTA"
+      onSave={handleSave}
+      saveDisabled={!selectedRota}
     >
-      <DialogTitle>Assign ROTA</DialogTitle>
       <DialogContent>
         <Typography variant="subtitle1" gutterBottom>
           ROTA
@@ -119,19 +115,7 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
           ))}
         </Select>
       </DialogContent>
-      <DialogActions sx={{ padding: 2 }}>
-        <Button onClick={handleClose} variant="outlined">
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSave}
-          variant="contained"
-          disabled={!selectedRota}
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+    </BaseModal>
   );
 };
 

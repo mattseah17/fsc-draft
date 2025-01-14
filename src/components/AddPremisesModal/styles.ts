@@ -8,7 +8,6 @@ export const styles = {
     flexDirection: "column",
   },
   container: {
-    p: 3,
     flex: 1,
     display: "flex",
     flexDirection: "column",
@@ -17,6 +16,7 @@ export const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    fontWeight: 600,
     mb: 2,
   },
   tabContainer: {
@@ -60,7 +60,8 @@ export const styles = {
       backgroundColor: "#FFFFFF",
       borderLeft: "1px solid #EEEEEE",
       borderRight: "1px solid #EEEEEE",
-      minHeight: "62px",
+      height: "280px",
+      overflow: "auto",
     },
     footer: {
       padding: "16px 32px",
@@ -71,6 +72,7 @@ export const styles = {
       height: "26px",
       borderBottomLeftRadius: "16px",
       borderBottomRightRadius: "16px",
+      borderTop: "1px solid #EEEEEE",
     },
     cell: {
       padding: "8px",

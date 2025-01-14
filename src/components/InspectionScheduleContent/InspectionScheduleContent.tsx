@@ -62,7 +62,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
