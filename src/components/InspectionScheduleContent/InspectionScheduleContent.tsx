@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Typography,
@@ -62,6 +62,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
   const [selectedPremises, setSelectedPremises] = useState<string[]>([]);
   const [openAssignModal, setOpenAssignModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const tableWrapperRef = useRef<HTMLDivElement>(null);
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -104,6 +105,13 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     setIsAssignMode(true);
     onAssignModeChange(true);
     handleEditMenuClose();
+
+    // Scroll after state update
+    setTimeout(() => {
+      if (tableWrapperRef.current) {
+        tableWrapperRef.current.scrollTop = 0;
+      }
+    }, 0);
   };
 
   const handleRotaAssignment = (enforcementNumber: string, rota: string) => {
@@ -458,7 +466,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
             />
           ) : (
             <>
-              <Box sx={styles.table.wrapper}>
+              <Box ref={tableWrapperRef} sx={styles.table.wrapper}>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>

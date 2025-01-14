@@ -53,7 +53,7 @@ export const styles = {
       lineHeight: "16.34px",
     },
     checkboxCell: {
-      padding: "16px 0 16px 32px",
+      padding: "0 0 0 32px",
     },
     wrapper: {
       flex: 1,
