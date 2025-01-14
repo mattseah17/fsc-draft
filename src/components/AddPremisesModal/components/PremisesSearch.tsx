@@ -29,7 +29,7 @@ export const PremisesSearch: React.FC<PremisesSearchProps> = ({
       noOptionsText="No matching results found"
       value={null}
       inputValue={searchQuery}
-      onInputChange={(event, newInputValue) => onSearchChange(newInputValue)}
+      onInputChange={(_, newInputValue) => onSearchChange(newInputValue)}
       sx={styles.autocomplete}
       renderInput={(params) => (
         <TextField
@@ -69,9 +69,7 @@ export const PremisesSearch: React.FC<PremisesSearchProps> = ({
           </Box>
         </Box>
       )}
-      onChange={(event, newValue) =>
-        onPremiseSelect(newValue as Premise | null)
-      }
+      onChange={(_, newValue) => onPremiseSelect(newValue as Premise | null)}
     />
   );
 };
