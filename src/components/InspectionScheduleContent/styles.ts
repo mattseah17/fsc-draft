@@ -139,8 +139,8 @@ export const styles = {
       backgroundColor: "#454545",
       opacity: 1,
       "& .MuiTypography-root": {
-        fontFamily: "Noto Sans, sans-serif"
-      }
+        fontFamily: "Noto Sans, sans-serif",
+      },
     },
   },
   tooltipText: {
@@ -164,7 +164,7 @@ export const styles = {
       width: "440px",
       height: "196px",
       borderRadius: "16px",
-      gap: "10px",
+      
     },
   },
   confirmDialogContent: {
@@ -177,8 +177,7 @@ export const styles = {
     fontWeight: 400,
   },
   confirmDialogActions: {
-    px: 3,
-    pb: 3,
+    padding: "16px 20px",
   },
   availabilityBox: (status: string) => ({
     display: "inline-flex",

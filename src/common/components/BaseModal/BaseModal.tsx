@@ -29,9 +29,11 @@ export const BaseModal: React.FC<BaseModalProps> = ({
       onClose={onClose}
       maxWidth={false}
       sx={sx}
+      keepMounted={false}
+      aria-labelledby="modal-title"
       {...modalProps}
     >
-      {title}
+      <div id="modal-title">{title}</div>
       {children}
       {footer}
     </Dialog>

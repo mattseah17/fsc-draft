@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Button, Tabs, Tab, Typography } from "@mui/material";
-import { dummyPremises } from "../../data/dummyPremises";
-import { Premise, OriginType } from "../../types/premises";
+import { Premise } from "../../types/premises";
 import { dummyRecommendedPremises } from "../../data/dummyRecommendedPremises";
 import { styles } from "./styles";
 import { PremisesTable } from "./components/PremisesTable/PremisesTable";
 import { PremisesSearch } from "./components/PremisesSearch/PremisesSearch";
 import { EmptyState } from "../../common/components/EmptyState/EmptyState";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
+import { useAddPremises } from "./hooks/useAddPremises";
 
 interface AddPremisesModalProps {
   open: boolean;
@@ -17,118 +17,36 @@ interface AddPremisesModalProps {
   totalRequiredPremises: number;
 }
 
-const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
+export const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
   open,
   onClose,
   onSave,
   existingPremises,
   totalRequiredPremises,
 }) => {
-  const [tabValue, setTabValue] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPremises, setSelectedPremises] = useState<Premise[]>([]);
-  const [filteredPremises, setFilteredPremises] = useState<Premise[]>([]);
-
-  const availablePremises = filteredPremises.filter(
-    (premise) =>
-      !selectedPremises.some(
-        (selected) => selected.enforcementNumber === premise.enforcementNumber
-      ) &&
-      !existingPremises.some(
-        (existing) => existing.enforcementNumber === premise.enforcementNumber
-      )
-  );
-
-  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-    setSearchQuery("");
-    setFilteredPremises([]);
-  };
-
-  useEffect(() => {
-    if (!searchQuery) {
-      setFilteredPremises([]);
-      return;
-    }
-
-    const query = searchQuery.toLowerCase();
-    const filtered = dummyPremises.filter(
-      (premise) =>
-        premise.enforcementNumber.toLowerCase().includes(query) ||
-        premise.premisesName.toLowerCase().includes(query) ||
-        premise.address.toLowerCase().includes(query)
-    );
-    setFilteredPremises(filtered);
-  }, [searchQuery]);
-
-  const handleOriginChange = (premiseId: string, newOrigins: OriginType[]) => {
-    setSelectedPremises((prevPremises) =>
-      prevPremises.map((premise) =>
-        premise.enforcementNumber === premiseId
-          ? { ...premise, origin: newOrigins }
-          : premise
-      )
-    );
-  };
+  const {
+    tabValue,
+    searchQuery,
+    selectedPremises,
+    availablePremises,
+    handleTabChange,
+    setSearchQuery,
+    setSelectedPremises,
+    handleOriginChange,
+    handleAutocompleteSelect,
+    resetState,
+  } = useAddPremises({ existingPremises, totalRequiredPremises, open });
 
   const handleSave = () => {
     onSave(selectedPremises);
-    setSelectedPremises([]);
+    resetState();
     onClose();
   };
 
   const handleClose = () => {
-    setSelectedPremises([]);
-    setSearchQuery("");
-    setFilteredPremises([]);
-    setTabValue(0);
+    resetState();
     onClose();
   };
-
-  useEffect(() => {
-    if (!open) {
-      setSelectedPremises([]);
-      setSearchQuery("");
-      setFilteredPremises([]);
-      setTabValue(0);
-    }
-  }, [open]);
-
-  const handleAutocompleteSelect = (selectedPremise: Premise | null) => {
-    if (selectedPremise) {
-      if (
-        !selectedPremises.some(
-          (p) => p.enforcementNumber === selectedPremise.enforcementNumber
-        )
-      ) {
-        setSelectedPremises([
-          ...selectedPremises,
-          { ...selectedPremise, origin: ["Ops Survey"] },
-        ]);
-      }
-      setSearchQuery("");
-      setFilteredPremises([]);
-    }
-  };
-
-  useEffect(() => {
-    if (tabValue === 1) {
-      const remainingNeeded = totalRequiredPremises - existingPremises.length;
-
-      const availableRecommended = dummyRecommendedPremises.filter(
-        (premise) =>
-          !existingPremises.some(
-            (p) => p.enforcementNumber === premise.enforcementNumber
-          )
-      );
-
-      const initialRecommended = availableRecommended.slice(0, remainingNeeded);
-
-      setSelectedPremises(initialRecommended);
-    } else if (tabValue === 0) {
-      setSelectedPremises([]);
-    }
-  }, [tabValue, totalRequiredPremises, existingPremises]);
 
   const renderSearchTab = () => (
     <Box sx={styles.searchContainer}>
@@ -224,13 +142,26 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
             borderRadius: "16px",
           },
         },
+        disableEnforceFocus: true,
+        disableAutoFocus: true,
       }}
     >
       <Box sx={styles.container}>
         <Box sx={styles.tabContainer}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Search" />
-            <Tab label="Recommend" />
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            TabIndicatorProps={{ children: <span /> }}
+            sx={{
+              "& .MuiTabs-indicator": {
+                display: "flex",
+                justifyContent: "center",
+                backgroundColor: "transparent",
+              },
+            }}
+          >
+            <Tab label="Search" disableFocusRipple disableRipple />
+            <Tab label="Recommend" disableFocusRipple disableRipple />
           </Tabs>
         </Box>
         {tabValue === 0 ? renderSearchTab() : renderRecommendTab()}

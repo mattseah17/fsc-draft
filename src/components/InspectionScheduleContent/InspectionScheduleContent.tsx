@@ -627,7 +627,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           open={openConfirmModal}
           onClose={handleConfirmModalClose}
           title={
-            <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>
+            <DialogTitle sx={{ pb: 0, fontWeight: 600 }}>
               Confirm & Notify?
             </DialogTitle>
           }
