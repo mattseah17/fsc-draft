@@ -6,6 +6,8 @@ import {
   Typography,
   Box,
   Avatar,
+  Button,
+  DialogActions,
 } from "@mui/material";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 
@@ -51,11 +53,63 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
     <BaseModal
       open={open}
       onClose={handleClose}
-      title="Assign ROTA"
-      onSave={handleSave}
-      saveDisabled={!selectedRota}
+      title={
+        <Box
+          sx={{
+            width: "629px",
+            height: "32px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+            Assign ROTA
+          </Typography>
+        </Box>
+      }
+      footer={
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{
+              height: "40px",
+              minWidth: "90px",
+              padding: "14px 10px",
+              gap: "10px",
+              borderRadius: "8px",
+              border: "none",
+              color: "#595959",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            disabled={!selectedRota}
+            sx={{
+              height: "40px",
+              minWidth: "90px",
+              padding: "14px 16px",
+              gap: "10px",
+              borderRadius: "8px",
+            }}
+          >
+            Save
+          </Button>
+        </DialogActions>
+      }
+      sx={{
+        "& .MuiDialog-paper": {
+          width: "629px",
+          height: "244px",
+          padding: "20px",
+          borderRadius: "16px",
+        },
+      }}
     >
-      <DialogContent>
+      <DialogContent sx={{ padding: "20px 0px" }}>
         <Typography variant="subtitle1" gutterBottom>
           ROTA
         </Typography>

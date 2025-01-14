@@ -29,10 +29,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styles } from "./styles";
 import AssignRotaModal from "../AssignRotaModal/AssignRotaModal";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
+import { BaseModal } from "../../common/components/BaseModal/BaseModal";
+import { DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { usePremises } from "../../contexts/PremisesContext";
@@ -625,29 +623,33 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           onSave={handleBulkAssign}
         />
 
-        <Dialog
+        <BaseModal
           open={openConfirmModal}
           onClose={handleConfirmModalClose}
-          sx={styles.confirmDialog}
+          title={
+            <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>
+              Confirm & Notify?
+            </DialogTitle>
+          }
+          footer={
+            <DialogActions sx={styles.confirmDialogActions}>
+              <Button onClick={handleConfirmModalClose} variant="outlined">
+                Cancel
+              </Button>
+              <Button onClick={handleConfirm} variant="contained">
+                Confirm
+              </Button>
+            </DialogActions>
+          }
+          modalProps={{ sx: styles.confirmDialog }}
         >
-          <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>
-            Confirm & Notify?
-          </DialogTitle>
           <DialogContent sx={styles.confirmDialogContent}>
             <Typography sx={styles.confirmDialogText}>
               Are you sure you want to notify the respective ROTA commander to
               verify the premises availability?
             </Typography>
           </DialogContent>
-          <DialogActions sx={styles.confirmDialogActions}>
-            <Button onClick={handleConfirmModalClose} variant="outlined">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirm} variant="contained">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+        </BaseModal>
 
         {/* Success Toast */}
         <Snackbar

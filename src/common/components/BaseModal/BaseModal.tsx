@@ -1,5 +1,6 @@
 import React from "react";
 import { Dialog, DialogProps } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 
 interface BaseModalProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface BaseModalProps {
   modalProps?: Partial<DialogProps>;
   onSave?: () => void;
   saveDisabled?: boolean;
+  sx?: SxProps<Theme>;
 }
 
 export const BaseModal: React.FC<BaseModalProps> = ({
@@ -19,9 +21,16 @@ export const BaseModal: React.FC<BaseModalProps> = ({
   title,
   footer,
   modalProps,
+  sx,
 }) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth={false} {...modalProps}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth={false}
+      sx={sx}
+      {...modalProps}
+    >
       {title}
       {children}
       {footer}
