@@ -10,8 +10,8 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
-import RoleSwitcher from "../RoleSwitcher/RoleSwitcher";
-import { useAuth } from "../../contexts/AuthContext";
+import RoleSwitcher from "../../../components/RoleSwitcher/RoleSwitcher";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface TopNavProps {
   page?: string;

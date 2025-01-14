@@ -41,12 +41,12 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
   const handleSave = () => {
     if (selectedRota) {
       onSave(selectedRota);
-      setSelectedRota(""); // Reset selection after save
+      setSelectedRota(""); 
     }
   };
 
   const handleClose = () => {
-    setSelectedRota(""); // Reset selection when modal closes
+    setSelectedRota(""); 
     onClose();
   };
 

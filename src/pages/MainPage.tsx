@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import SideNav from "../components/SideNav/SideNav";
-import TopNav from "../components/TopNav/TopNav";
+import SideNav from "../common/components/SideNav/SideNav";
+import TopNav from "../common/components/TopNav/TopNav";
 import InspectionScheduleContent from "../components/InspectionScheduleContent/InspectionScheduleContent";
 import Dashboard from "../components/Dashboard/Dashboard";
 import RotaCommanderView from "../components/RotaCommanderView/RotaCommanderView";
 import { useAuth } from "../contexts/AuthContext";
+
+const EnforcementOICContent: React.FC<{
+  onAssignModeChange: (mode: boolean) => void;
+}> = ({ onAssignModeChange }) => {
+  return <InspectionScheduleContent onAssignModeChange={onAssignModeChange} />;
+};
+
+const RotaCommanderContent: React.FC = () => {
+  return <RotaCommanderView />;
+};
 
 const MainPage: React.FC = () => {
   const [isAssignMode, setIsAssignMode] = useState(false);
@@ -26,11 +36,11 @@ const MainPage: React.FC = () => {
       return <Dashboard />;
     }
 
-    if (user?.role === "ENFORCEMENT_OIC") {
-      return <InspectionScheduleContent onAssignModeChange={setIsAssignMode} />;
-    }
-
-    return <RotaCommanderView />;
+    return user?.role === "ENFORCEMENT_OIC" ? (
+      <EnforcementOICContent onAssignModeChange={setIsAssignMode} />
+    ) : (
+      <RotaCommanderContent />
+    );
   };
 
   return (
