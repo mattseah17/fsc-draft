@@ -6,7 +6,7 @@ import { dummyRecommendedPremises } from "../../data/dummyRecommendedPremises";
 import { styles } from "./styles";
 import { PremisesTable } from "./components/PremisesTable";
 import { PremisesSearch } from "./components/PremisesSearch";
-import { EmptyState } from "./components/EmptyState";
+import { EmptyState } from "../../common/components/EmptyState/EmptyState";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 
 interface AddPremisesModalProps {
@@ -152,9 +152,16 @@ const AddPremisesModal: React.FC<AddPremisesModalProps> = ({
             title={`${selectedPremises.length} Premises Selected`}
           />
         ) : searchQuery && availablePremises.length === 0 ? (
-          <EmptyState message="No matching results found" />
+          <EmptyState
+            message="No matching results found"
+            sx={styles.emptyState}
+          />
         ) : (
-          <EmptyState message="Please try searching by address, enforcement number or premises name" />
+          <EmptyState
+            message="No matching results found"
+            subMessage="Try searching by address, enforcement number or premises name"
+            sx={styles.emptyState}
+          />
         )}
       </Box>
     </Box>

@@ -26,6 +26,7 @@ import { AvailabilityStatus } from "../../types/premises";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
+import { EmptyState } from "../../common/components/EmptyState/EmptyState";
 
 const getAvailabilityStyle = (
   status: "available" | "unavailable" | "pending"
@@ -62,7 +63,7 @@ const RotaCommanderView: React.FC = () => {
     (premise) => premise.assignedRota === `ROTA ${user?.rotaNumber}`
   );
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
@@ -186,20 +187,11 @@ const RotaCommanderView: React.FC = () => {
             </Box>
           </Box>
           {rotaPremises.length === 0 ? (
-            <Box sx={styles.emptyState}>
-              <Box
-                component="img"
-                src="src/assets/empty_state.png"
-                alt="Empty state illustration"
-                sx={{ mb: 3, width: 200 }}
-              />
-              <Typography variant="h6" gutterBottom>
-                No premises assigned to you
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Let's wait for the premises to be assigned
-              </Typography>
-            </Box>
+            <EmptyState
+              message="No premises assigned to you"
+              subMessage="Let's wait for the premises to be assigned"
+              sx={styles.emptyState}
+            />
           ) : (
             <>
               <Box sx={styles.table.wrapper}>

@@ -36,6 +36,7 @@ import DialogActions from "@mui/material/DialogActions";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { usePremises } from "../../contexts/PremisesContext";
+import { EmptyState } from "../../common/components/EmptyState/EmptyState";
 
 interface InspectionScheduleContentProps {
   onAssignModeChange: (isAssignMode: boolean) => void;
@@ -175,7 +176,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
     if (selectedPremises.length > 0) {
       setSelectedPremises([]);
     } else {
-      setSelectedPremises(premises.map(p => p.enforcementNumber));
+      setSelectedPremises(premises.map((p) => p.enforcementNumber));
     }
   };
 
@@ -345,10 +346,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
               {!isAssignMode && (
                 <Tooltip
                   title={
-                    <Typography sx={{
-                      ...styles.tooltipText,
-                      
-                    }}>
+                    <Typography
+                      sx={{
+                        ...styles.tooltipText,
+                      }}
+                    >
                       Premises data and propensity scores refresh automatically
                       every month. It is recommended to start planning from the
                       21th of each month.
@@ -449,21 +451,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           </Box>
 
           {premises.length === 0 ? (
-            <Box sx={styles.emptyState}>
-              <Box
-                component="img"
-                src="src/assets/empty_state.png"
-                alt="Empty state illustration"
-                sx={{ mb: 3, width: 200 }}
-              />
-              <Typography variant="h6" gutterBottom>
-                Time to start planning your inspection schedule
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Use data-driven insights to add recommended premises or search
-                for targeted premises
-              </Typography>
-            </Box>
+            <EmptyState
+              message="Time to start planning your inspection schedule"
+              subMessage="Use data-driven insights to add recommended premises or search for targeted premises"
+              sx={styles.emptyState}
+            />
           ) : (
             <>
               <Box sx={styles.table.wrapper}>
@@ -471,15 +463,20 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                   <TableHead>
                     <TableRow>
                       {isAssignMode && !isPendingRotaVerification ? (
-                        <TableCell padding="checkbox" sx={styles.table.checkboxCell}>
+                        <TableCell
+                          padding="checkbox"
+                          sx={styles.table.checkboxCell}
+                        >
                           <Checkbox
                             indeterminate={selectedPremises.length > 0}
-                            checked={selectedPremises.length === premises.length}
+                            checked={
+                              selectedPremises.length === premises.length
+                            }
                             onChange={handleHeaderCheckboxChange}
                             sx={{
-                              '&.Mui-indeterminate': {
-                                color: 'white',
-                              }
+                              "&.Mui-indeterminate": {
+                                color: "white",
+                              },
                             }}
                           />
                         </TableCell>
@@ -625,7 +622,9 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           onClose={handleConfirmModalClose}
           sx={styles.confirmDialog}
         >
-          <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>Confirm & Notify?</DialogTitle>
+          <DialogTitle sx={{ pb: 1, fontWeight: 600 }}>
+            Confirm & Notify?
+          </DialogTitle>
           <DialogContent sx={styles.confirmDialogContent}>
             <Typography sx={styles.confirmDialogText}>
               Are you sure you want to notify the respective ROTA commander to
