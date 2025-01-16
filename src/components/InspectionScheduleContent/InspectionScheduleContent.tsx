@@ -17,21 +17,15 @@ import {
   Checkbox,
   Select,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import AddPremisesModal from "../AddPremisesModal/AddPremisesModal";
 import { Premise } from "../../types/premises";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styles } from "./styles";
 import AssignRotaModal from "../AssignRotaModal/AssignRotaModal";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
 import { DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { usePremises } from "../../contexts/PremisesContext";
 import { EmptyState } from "../../common/components/EmptyState/EmptyState";
@@ -292,7 +286,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
 
         <Box sx={styles.statsContainer}>
           <Box sx={styles.statBox}>
-            <ApartmentOutlinedIcon sx={{ fontSize: 24 }} />
+            <img src="src/assets/buildings.svg" width={40} height={40} />
             <Box>
               <Typography variant="body2" color="text.secondary">
                 {premises.length} / 39 Premises
@@ -359,13 +353,13 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                     >
                       Premises data and propensity scores refresh automatically
                       every month. It is recommended to start planning from the
-                      21th of each month.
+                      21st of each month.
                     </Typography>
                   }
                   placement="right"
                   sx={styles.tooltip}
                 >
-                  <InfoOutlinedIcon sx={styles.infoIcon} />
+                  <img src="src/assets/information.svg" />
                 </Tooltip>
               )}
             </Box>
@@ -389,7 +383,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
               </Box>
             ) : premises.length === 0 ? (
               <Button
-                startIcon={<AddIcon />}
+                startIcon={<img src="src/assets/add-premises.svg" />}
                 variant="outlined"
                 onClick={handleOpenModal}
                 sx={{
@@ -403,7 +397,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
             ) : (
               <Box sx={{ display: "flex", gap: 2 }}>
                 <Button
-                  startIcon={<BorderColorOutlinedIcon />}
+                  startIcon={<img src="src/assets/edit-schedule.svg" />}
                   endIcon={<ExpandMoreOutlinedIcon />}
                   variant="outlined"
                   onClick={handleEditMenuClick}
@@ -429,11 +423,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                     }}
                     sx={styles.menuItem}
                   >
-                    <AddIcon fontSize="small" />
+                    <img src="src/assets/add-premises.svg" />
                     Add Premises
                   </MenuItem>
                   <MenuItem onClick={handleAssignPremises} sx={styles.menuItem}>
-                    <PersonAddAltIcon fontSize="small" />
+                    <img src="src/assets/assign-premises.svg" />
                     Assign Premises
                   </MenuItem>
                 </Menu>
@@ -461,6 +455,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
               message="Time to start planning your inspection schedule"
               subMessage="Use data-driven insights to add recommended premises or search for targeted premises"
               sx={styles.emptyState}
+              imageSrc="src/assets/schedule-empty.svg"
             />
           ) : (
             <>
@@ -592,7 +587,7 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
                               handleDeletePremise(premise.enforcementNumber)
                             }
                           >
-                            <DeleteIcon />
+                            <img src="src/assets/delete-premises.svg" />
                           </IconButton>
                         </TableCell>
                       </TableRow>
@@ -658,7 +653,11 @@ const InspectionScheduleContent: React.FC<InspectionScheduleContentProps> = ({
           onClose={() => setShowToast(false)}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          <Alert severity="success" sx={styles.successAlert}>
+          <Alert
+            severity="success"
+            sx={styles.successAlert}
+            icon={<img src="src/assets/toast-success.svg" />}
+          >
             Added {newlyAddedCount}{" "}
             {newlyAddedCount === 1 ? "premise" : "premises"} to inspection
             schedule

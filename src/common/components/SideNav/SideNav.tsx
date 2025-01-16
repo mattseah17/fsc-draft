@@ -9,7 +9,6 @@ import {
   ListItemButton,
 } from "@mui/material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import { styles } from "./SideNav.styles";
 
 interface SideNavProps {
@@ -45,7 +44,7 @@ const SideNav: React.FC<SideNavProps> = ({ onRouteChange, currentRoute }) => {
           sx={{ ...styles.listItemButton, ...styles.dashboardButton }}
         >
           <ListItemIcon sx={styles.listIcon}>
-            <DashboardOutlinedIcon sx={{ fontSize: 24, color: "black" }} />
+            <Box component="img" src="src/assets/dashboard.svg" sx={{ width: 24, height: 24 }} />
           </ListItemIcon>
           <ListItemText primary="Dashboard" sx={styles.listItemText} />
         </ListItemButton>

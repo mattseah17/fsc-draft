@@ -7,9 +7,6 @@ import {
   Link,
   Menu,
 } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PersonIcon from "@mui/icons-material/Person";
 import RoleSwitcher from "../../../components/RoleSwitcher/RoleSwitcher";
 import { useAuth } from "../../../contexts/AuthContext";
 import { styles } from "./TopNav.styles";
@@ -59,25 +56,17 @@ const TopNav: React.FC<TopNavProps> = ({ page }) => {
           <Avatar sx={styles.menuAvatar}>{user?.name.charAt(0)}</Avatar>
           <Typography sx={styles.menuName}>{user?.name}</Typography>
           <Typography sx={styles.menuEmail}>{user?.email}</Typography>
+          <Typography sx={styles.menuEmail}>{user?.role}</Typography>
+          <Typography sx={styles.menuEmail}>Sengkang Fire Station</Typography>
         </Box>
 
         <Box sx={styles.menuContent}>
           <Box sx={styles.menuItem}>
-            <PersonIcon sx={styles.menuIcon} />
-            <Typography sx={styles.menuItemText}>
-              {user?.role === "ROTA_COMMANDER"
-                ? `${user.role} ${user.rotaNumber}`
-                : user?.role}
-            </Typography>
-          </Box>
-          <Box sx={styles.menuItem}>
-            <LocationOnIcon sx={styles.menuIcon} />
-            <Typography sx={styles.menuItemText}>
-              Sengkang Fire Station
-            </Typography>
+            <img src="src/assets/station-details.svg" style={styles.menuIcon} />
+            <Typography sx={styles.menuItemText}>Station Details</Typography>
           </Box>
           <Box sx={styles.logoutItem} onClick={handleClose}>
-            <LogoutIcon sx={styles.menuIcon} />
+            <img src="src/assets/logout.svg" style={styles.menuIcon} />
             <Typography sx={styles.menuItemText}>Logout</Typography>
           </Box>
         </Box>

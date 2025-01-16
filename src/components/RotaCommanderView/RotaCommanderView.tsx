@@ -17,7 +17,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { usePremises } from "../../contexts/PremisesContext";
 import { styles } from "../RotaCommanderView/styles";
 import Tooltip from "@mui/material/Tooltip";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -162,15 +161,7 @@ const RotaCommanderView: React.FC = () => {
                   },
                 }}
               >
-                <InfoOutlinedIcon
-                  sx={{
-                    fontSize: 16,
-                    color: "text.secondary",
-                    "&:hover": {
-                      color: "primary.main",
-                    },
-                  }}
-                />
+                <img src="src/assets/information.svg" />
               </Tooltip>
             </Box>
 
@@ -191,6 +182,7 @@ const RotaCommanderView: React.FC = () => {
               message="No premises assigned to you"
               subMessage="Let's wait for the premises to be assigned"
               sx={styles.emptyState}
+              imageSrc="src/assets/schedule-empty.svg"
             />
           ) : (
             <>
@@ -451,6 +443,7 @@ const RotaCommanderView: React.FC = () => {
           onClose={() => setShowAvailabilityToast(false)}
           severity="success"
           sx={styles.successAlert}
+          icon={<img src="src/assets/toast-success.svg" />}
         >
           Premises availability updated
         </Alert>
@@ -466,6 +459,7 @@ const RotaCommanderView: React.FC = () => {
           onClose={() => setShowToast(false)}
           severity="success"
           sx={styles.successAlert}
+          icon={<img src="src/assets/toast-success.svg" />}
         >
           Confirmed premises availability and notified Enforcement OIC
         </Alert>
