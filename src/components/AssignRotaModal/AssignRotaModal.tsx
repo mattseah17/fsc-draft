@@ -10,25 +10,13 @@ import {
   DialogActions,
 } from "@mui/material";
 import { BaseModal } from "../../common/components/BaseModal/BaseModal";
+import { styles } from "./AssignRotaModal.styles";
 
 interface AssignRotaModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (rota: string) => void;
 }
-
-const getRotaColor = (rotaNumber: number) => {
-  switch (rotaNumber) {
-    case 1:
-      return "#1976d2";
-    case 2:
-      return "#7b1fa2";
-    case 3:
-      return "#ed6c02";
-    default:
-      return "#grey";
-  }
-};
 
 const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
   open,
@@ -54,17 +42,8 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
       open={open}
       onClose={handleClose}
       title={
-        <Box
-          sx={{
-            width: "629px",
-            height: "32px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
-            Assign ROTA
-          </Typography>
+        <Box sx={styles.titleBox}>
+          <Typography sx={styles.titleText}>Assign ROTA</Typography>
         </Box>
       }
       footer={
@@ -72,15 +51,7 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
           <Button
             onClick={handleClose}
             variant="outlined"
-            sx={{
-              height: "40px",
-              minWidth: "90px",
-              padding: "14px 10px",
-              gap: "10px",
-              borderRadius: "8px",
-              border: "none",
-              color: "#595959",
-            }}
+            sx={styles.cancelButton}
           >
             Cancel
           </Button>
@@ -88,28 +59,15 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
             onClick={handleSave}
             variant="contained"
             disabled={!selectedRota}
-            sx={{
-              height: "40px",
-              minWidth: "90px",
-              padding: "14px 16px",
-              gap: "10px",
-              borderRadius: "8px",
-            }}
+            sx={styles.saveButton}
           >
             Save
           </Button>
         </DialogActions>
       }
-      sx={{
-        "& .MuiDialog-paper": {
-          width: "629px",
-          height: "244px",
-          padding: "20px",
-          borderRadius: "16px",
-        },
-      }}
+      sx={{ "& .MuiDialog-paper": styles.modalPaper }}
     >
-      <DialogContent sx={{ padding: "20px 0px" }}>
+      <DialogContent sx={styles.dialogContent}>
         <Typography variant="subtitle1" gutterBottom>
           ROTA
         </Typography>
@@ -118,11 +76,7 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
           value={selectedRota}
           displayEmpty
           onChange={(e) => setSelectedRota(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "1px solid #E0E0E0",
-            },
-          }}
+          sx={styles.select}
           renderValue={(selected) => {
             if (selected === "") {
               return (
@@ -131,15 +85,8 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
             }
             const rotaNumber = parseInt(selected.split(" ")[1]);
             return (
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Avatar
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    fontSize: 14,
-                    bgcolor: getRotaColor(rotaNumber),
-                  }}
-                >
+              <Box sx={styles.menuItem}>
+                <Avatar sx={styles.avatar(rotaNumber)}>
                   {`R${rotaNumber}`}
                 </Avatar>
                 {selected}
@@ -152,18 +99,9 @@ const AssignRotaModal: React.FC<AssignRotaModalProps> = ({
             <MenuItem
               key={number}
               value={`ROTA ${number}`}
-              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+              sx={styles.menuItem}
             >
-              <Avatar
-                sx={{
-                  width: 24,
-                  height: 24,
-                  fontSize: 14,
-                  bgcolor: getRotaColor(number),
-                }}
-              >
-                {`R${number}`}
-              </Avatar>
+              <Avatar sx={styles.avatar(number)}>{`R${number}`}</Avatar>
               {`ROTA ${number}`}
             </MenuItem>
           ))}
